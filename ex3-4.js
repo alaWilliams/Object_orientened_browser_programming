@@ -5,6 +5,20 @@ let finland = {
     gdp: 257,
     area: 338455,
     languages: ['Finnish', 'Swedish', 'Saami'],
+    largestCities: [
+        {
+            name: "Helsinki",            
+            population: 1000000            
+        },
+        {
+            name: "Turku",            
+            population: 500000            
+        },
+        {
+            name: "Tampere",
+            population: 450000
+        }
+    ],
     countryCode: 'FI'
 };
 
