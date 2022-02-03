@@ -54,6 +54,14 @@
 
       targetElement.children[1].children[2].innerText = "$500";
       targetElement.children[1].children[2].style.fontSize = "30px";
+
+      //const products = document.getElementsByClassName('product');
+      const products = document.querySelectorAll('.product');
+      console.log(products);
+      for(let i = 0; i < products.length; i++) {
+        products[i].style.backgroundColor = "white";
+        products[i].style.color = "black";
+      }
     </script>
 
   
