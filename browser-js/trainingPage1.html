@@ -30,11 +30,11 @@
   <body>
     <h1>Hello JS DOM World</h1>
 
-    <div id="firstBox" class="box">
+    <div id="firstBox" class="box" onclick="ex7(this)">
       This is the first box
     </div>
 
-    <div id="secondBox" class="box">
+    <div id="secondBox" class="box" onclick="ex7(this)">
       This is the second box
     </div>
 
@@ -48,9 +48,18 @@
       </ul>
     
     </div>
+    <button onclick="demo()">ok</button>
 
     <script>
+      function demo() {
+        console.log("hello")
+        let list = document.querySelector('.list');
+        list.style.backgroundColor = 'green';
+      }
 
+      function ex7(element) {
+        element.style.backgroundColor = 'green';
+      }
 
     
     </script>
