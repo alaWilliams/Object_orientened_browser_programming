@@ -167,10 +167,6 @@ function sumCitiesPopulation(array) {
   return sum;
 }
 
-function calculatePercentsPopulation(array) {
-  sumCitiesPopulation()
-}
-
 
 function printCountryInfo(array) {
   array.forEach(country => {
