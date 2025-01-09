@@ -23,24 +23,24 @@ let arrayOfCountries = [{
   ISO3166: 'BE',
   largestCities: [
     {
-      name: '',
-      population: ''
+      name: 'Brussels',
+      population: 1221000
     },
     {
-      name: '',
-      population: ''
+      name: 'Antwerp',
+      population: 529000
     },
     {
-      name: '',
-      population: ''
+      name: 'Ghent',
+      population: 263000
     },
     {
-      name: '',
-      population: ''
+      name: 'Charleroi',
+      population: 202000
     },
     {
-      name: '',
-      population: ''
+      name: 'Liège',
+      population: 198000
     }
   ]
 }, 
@@ -54,24 +54,24 @@ let arrayOfCountries = [{
   ISO3166: 'DE',
   largestCities: [
     {
-      name: '',
-      population: ''
+      name: 'Berlin',
+      population: 3769000
     },
     {
-      name: '',
-      population: ''
+      name: 'Hamburg',
+      population: 1847000
     },
     {
-      name: '',
-      population: ''
+      name: 'Munich',
+      population: 1488000
     },
     {
-      name: '',
-      population: ''
+      name: 'Cologne',
+      population: 1087000
     },
     {
-      name: '',
-      population: ''
+      name: 'Frankfurt',
+      population: 763000
     }
   ]
 },
@@ -85,24 +85,24 @@ let arrayOfCountries = [{
   ISO3166: 'FR',
   largestCities: [
     {
-      name: '',
-      population: ''
+      name: 'Paris',
+      population: 2165000
     },
     {
-      name: '',
-      population: ''
+      name: 'Marseille',
+      population: 870000
     },
     {
-      name: '',
-      population: ''
+      name: 'Lyon',
+      population: 532000
     },
     {
-      name: '',
-      population: ''
+      name: 'Toulouse',
+      population: 493000
     },
     {
-      name: '',
-      population: ''
+      name: 'Nice',
+      population: 342000
     }
   ]
 },
@@ -116,24 +116,75 @@ let arrayOfCountries = [{
   ISO3166: 'SE',
   largestCities: [
     {
-      name: '',
-      population: ''
+      name: 'Stockholm',
+      population: 975000
     },
     {
-      name: '',
-      population: ''
+      name: 'Gothenburg',
+      population: 583000
     },
     {
-      name: '',
-      population: ''
+      name: 'Malmö',
+      population: 347000
     },
     {
-      name: '',
-      population: ''
+      name: 'Uppsala',
+      population: 177000
     },
     {
-      name: '',
-      population: ''
+      name: 'Västerås',
+      population: 154000
     }
   ]
 }];
+
+let cities = [
+  {
+    name: 'Paris',
+    population: 2165000
+  },
+  {
+    name: 'Marseille',
+    population: 870000
+  },
+  {
+    name: 'Lyon',
+    population: 532000
+  },
+  {
+    name: 'Toulouse',
+    population: 493000
+  },
+  {
+    name: 'Nice',
+    population: 342000
+  }
+]
+
+function sumCitiesPopulation(array) {
+  let sum = 0
+  array.forEach(city => sum += city.population);
+  return sum;
+}
+
+function calculatePercentsPopulation(array) {
+  sumCitiesPopulation()
+}
+
+
+function printCountryInfo(array) {
+  array.forEach(country => {
+    console.log(`Name of the country: ${country.country}`);
+    console.log(`Population is: ${country.population}`);
+    console.log(`Five biggest cities and their population: `);
+    country.largestCities.forEach(city => console.log(`* ${city.name} - ${city.population}`))
+    console.log(`The population in the five largest cities is: ${sumCitiesPopulation(country.largestCities)}`)
+    let percentage = (sumCitiesPopulation(country.largestCities) / country.population * 100).toFixed(2);
+    console.log(`The percentage of the population in the five largest cities out of the total population in the country is: ${percentage} %`);
+    console.log('\n')
+  }
+    )
+ 
+}
+
+printCountryInfo(arrayOfCountries)
