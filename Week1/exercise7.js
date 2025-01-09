@@ -138,28 +138,6 @@ let arrayOfCountries = [{
   ]
 }];
 
-let cities = [
-  {
-    name: 'Paris',
-    population: 2165000
-  },
-  {
-    name: 'Marseille',
-    population: 870000
-  },
-  {
-    name: 'Lyon',
-    population: 532000
-  },
-  {
-    name: 'Toulouse',
-    population: 493000
-  },
-  {
-    name: 'Nice',
-    population: 342000
-  }
-]
 
 function sumCitiesPopulation(array) {
   let sum = 0
