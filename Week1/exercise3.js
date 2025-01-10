@@ -48,10 +48,8 @@ function getMaxPopulationCountry(array) {
       biggest = element;
     }}
   )
-
     
-    
-  return biggest.country;
+  return `Most populated country is ${biggest.country}.`;
 };
 
 console.log(getMaxPopulationCountry(arrayOfCountries));
