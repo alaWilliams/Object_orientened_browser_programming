@@ -44,7 +44,7 @@ let arrayOfCountries = [{
 function getMaxPopulationCountry(array) {
   let biggest = array[0]
   array.forEach((element) => {
-    if (biggest.population < element.population ){
+    if (biggest.population < element.population){
       biggest = element;
     }}
   )
