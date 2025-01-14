@@ -26,31 +26,46 @@ function printSmallestMeteorite(data) {
 }
 
 
+function makeYearIntoDecade(number) {
+  return Math.floor(number/10) * 10
+}
+
+
+// Create function to get biggest meteorite from a given decade, where decade is given as a parameter. 
 function printBiggestFromDecade(data, year){
-//  let meteoritesFromDecade = [];
+let meteoritesFromSameDecade = [];
+// converting given year into decade
+let yearInDecade = makeYearIntoDecade(year);
+
 data.forEach(element => {
 //making a condition if year exists 
   if (element.year) {
+    // converting meteorite year into decade
     let date = element.year;
     let meteoriteYear = Number(date.slice(0,4));
-  
-    if (meteoriteYear === year) {
-      console.log(element)
-    }
+    let meteoriteDecade = makeYearIntoDecade(meteoriteYear)
 
-    }
     
+    
+
+    if (meteoriteDecade === yearInDecade) {
+      meteoritesFromSameDecade.push(element)
+   }
+   }
+  
   })
+  //compare mass of meteorites 
+  let biggest = meteoritesFromSameDecade[0]
+  meteoritesFromSameDecade.forEach(element => {
+    if (Number(element.mass) > Number(biggest.mass)) {
+      biggest = element
+    }
+  })
+  return `The biggest meteorites from this decade is ${biggest.name}. It's mass was ${biggest.mass}.`
 }
   
 
- 
+console.log(printBiggestFromDecade(data, 2000))
 
-
-
-
-
-printBiggestFromDecade(data, 1905)
-
-// console.log(printBiggestMeteorite(data))
-// console.log(printSmallestMeteorite(data))
+console.log(printBiggestMeteorite(data))
+console.log(printSmallestMeteorite(data))
