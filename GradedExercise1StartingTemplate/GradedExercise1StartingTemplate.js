@@ -1,5 +1,46 @@
 const prompts = require('prompts');
 
+
+class Room {
+  constructor (name,numOfDoorways, enemies) {
+    this.name = name;
+    this.numOfDoorways = numOfDoorways;
+    this.enemies = enemies;
+  }
+  createEnemy(name, hitPoints, attackDamage) {
+    let enemy = new Enemy
+    console.log(enemy);
+  }
+}
+
+class Player {
+  constructor () {
+    const hitPoints = 10;
+    const attackDamage = 2;
+    const attackChance = Math.floor(Math.random() * 100)
+  }
+  move() {}
+  lookAround() {}
+  attack(){}
+  exit(){}
+}
+
+class Enemy {
+  constructor(name, hitPoints, attackDamage, attackChance, location) {
+    this.name = name;
+    this.location = location;
+    this.hitPoints = hitPoints;
+    this.attackChance = attackChance;
+    this.attackDamage = attackDamage;
+  }
+}
+
+const hallway = new Room('Hallway', 2, 1);
+// hallway.createEnemy('Sewer Rat', 5, 1 )
+const chamber = new Room('Chamber', 2, 1);
+// chamber.createEnemy('Giant Dragon')
+console.log(hallway)
+console.log(chamber)
 class Car {
   constructor(brand, model, registration) {
       this.brand = brand;
@@ -7,6 +48,7 @@ class Car {
       this.registration = registration;
       this.speed = 0;
   }
+
 
   increaseSpeed() {
       this.speed += 1;
@@ -39,16 +81,16 @@ class RaceCar extends Car {
   }
 }
 
-let audi = new Car('Audi', 'e-tron', 'ABC-123');
-audi.displayInformation();
-audi.increaseSpeed();
-audi.displayInformation();
+// let audi = new Car('Audi', 'e-tron', 'ABC-123');
+// audi.displayInformation();
+// audi.increaseSpeed();
+// audi.displayInformation();
 
-let f1 = new RaceCar('Mercedes', 'F1', '-');
-f1.displayInformation();
-f1.increaseSpeed();
-f1.displayInformation();
-f1.startRace();
+// let f1 = new RaceCar('Mercedes', 'F1', '-');
+// f1.displayInformation();
+// f1.increaseSpeed();
+// f1.displayInformation();
+// f1.startRace();
 
 /* Above the same code what was used for class inheritance demonstratino
    with Car and RaceCar classes and objects created from those two. 
@@ -59,9 +101,9 @@ async function gameLoop() {
 
     // Example set of UI options for the user to select
     const initialActionChoices = [
-        { title: 'Accelerate e-tron', value: 'accelerateEtron' },
-        { title: 'Accelerate f1', value: 'accelerateF1' },
-        { title: 'Display Info', value: 'info'},
+        { title: 'Look around', value: 'accelerateEtron' },
+        { title: 'Go to Room', value: 'accelerateF1' },
+        { title: 'Attack', value: 'info'},
         { title: 'Exit game', value: 'exit'}
     ];
 
@@ -77,15 +119,15 @@ async function gameLoop() {
     // Deal with the selected value
     console.log('You selected ' + response.value);
     switch(response.value) {
-      case 'accelerateEtron':
+      case 'lookAround':
         audi.increaseSpeed();
         break;
       
-      case 'accelerateF1':
+      case 'goToRoom':
         f1.increaseSpeed();
         break;
       
-      case 'info':
+      case 'attack':
         audi.displayInformation();
         f1.displayInformation();
         break;
@@ -100,9 +142,11 @@ async function gameLoop() {
     }    
 }
 
-process.stdout.write('\033c'); // clear screen on windows
+// process.stdout.write('\033c'); // clear screen on windows
 
-console.log('WELCOME TO THE DUNGEONS OF LORD OBJECT ORIENTUS!')
-console.log('================================================')
-console.log('You walk down the stairs to the dungeons')
-gameLoop();
+// console.log('WELCOME TO THE DUNGEONS OF LORD OBJECT ORIENTUS!')
+// console.log('================================================')
+// console.log('You walk down the stairs to the dungeons')
+// gameLoop();
+
+// console.log(Math.floor(Math.random() * 100))
