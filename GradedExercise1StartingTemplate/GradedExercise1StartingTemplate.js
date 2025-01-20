@@ -2,10 +2,12 @@ const prompts = require('prompts');
 
 
 class Room {
-  constructor (name,numOfDoorways, enemies) {
+  constructor (name,numOfDoorways, enemies, moveToRooms) {
     this.name = name;
     this.numOfDoorways = numOfDoorways;
     this.enemies = enemies;
+    this.moveToRooms = moveToRooms;
+
   }
 }
 
@@ -14,9 +16,28 @@ class Player {
     this.hitPoints = 10;
     this.attackDamage = 2;
     this.attackChance = Math.floor(Math.random() * 100);
+    this.location = hallway
   }
-  move() {}
-  lookAround() {}
+
+  lookAround() {
+    console.log(`You look around.`)
+    console.log(`You are in the ${this.location.name.toLowerCase()}.`)
+
+    if(this.location.numOfDoorways > 0) {
+      console.log(`There are doorways leading to:`)
+      this.location.moveToRooms.forEach(element => console.log(element));
+    }
+    
+
+    if (this.location.enemies.length > 0) {
+      console.log('There is an enemy here')
+    }
+  }
+
+  move() {
+    //display the location options
+    this.location.moveToRooms.forEach(element => console.log(element));
+    };
   attack(){
     this.attackChance = Math.floor(Math.random() * 100)
     if (this.attackChance <= 75) {
@@ -40,14 +61,15 @@ class Enemy {
 }
 
 
+
+const entrance = new Room('Entrance', 1, [], ['Hallway']);
+const hallway = new Room('Hallway', 2, ['rat'], ['Entrance', 'Chamber']);
+const chamber = new Room('Chamber', 2, ['dragon'], ['Hallway', 'Portal']);
+const portal = new Room('Portal', 0, [], []);
+
 const player = new Player()
+// player.lookAround();
 
-const entrance = new Room('Entrance', 1, []);
-const hallway = new Room('Hallway', 2, 1);
-const chamber = new Room('Chamber', 2, 1);
-const portal = new Room('Portal', 0, 0);
-
-console.log(entrance)
 class Car {
   constructor(brand, model, registration) {
       this.brand = brand;
@@ -88,16 +110,7 @@ class RaceCar extends Car {
   }
 }
 
-// let audi = new Car('Audi', 'e-tron', 'ABC-123');
-// audi.displayInformation();
-// audi.increaseSpeed();
-// audi.displayInformation();
 
-// let f1 = new RaceCar('Mercedes', 'F1', '-');
-// f1.displayInformation();
-// f1.increaseSpeed();
-// f1.displayInformation();
-// f1.startRace();
 
 /* Above the same code what was used for class inheritance demonstratino
    with Car and RaceCar classes and objects created from those two. 
@@ -108,8 +121,8 @@ async function gameLoop() {
 
     // Example set of UI options for the user to select
     const initialActionChoices = [
-        { title: 'Look around', value: 'accelerateEtron' },
-        { title: 'Go to Room', value: 'accelerateF1' },
+        { title: 'Look around', value: 'lookAround' },
+        { title: 'Go to Room', value: 'goToRoom' },
         { title: 'Attack', value: 'attack'},
         { title: 'Exit game', value: 'exit'}
     ];
@@ -127,11 +140,11 @@ async function gameLoop() {
     console.log('You selected ' + response.value);
     switch(response.value) {
       case 'lookAround':
-        audi.increaseSpeed();
+        player.lookAround();
         break;
       
       case 'goToRoom':
-        f1.increaseSpeed();
+        player.move();
         break;
       
       case 'attack':
@@ -154,5 +167,3 @@ async function gameLoop() {
 // console.log('================================================')
 // console.log('You walk down the stairs to the dungeons')
 // gameLoop();
-
-// console.log(Math.floor(Math.random() * 100))
