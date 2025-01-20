@@ -7,40 +7,47 @@ class Room {
     this.numOfDoorways = numOfDoorways;
     this.enemies = enemies;
   }
-  createEnemy(name, hitPoints, attackDamage) {
-    let enemy = new Enemy
-    console.log(enemy);
-  }
 }
 
 class Player {
   constructor () {
-    const hitPoints = 10;
-    const attackDamage = 2;
-    const attackChance = Math.floor(Math.random() * 100)
+    this.hitPoints = 10;
+    this.attackDamage = 2;
+    this.attackChance = Math.floor(Math.random() * 100);
   }
   move() {}
   lookAround() {}
-  attack(){}
+  attack(){
+    this.attackChance = Math.floor(Math.random() * 100)
+    if (this.attackChance <= 75) {
+      console.log('Succesfull attack')
+    } else {
+      console.log('Not succesfull')
+    }
+  }
   exit(){}
 }
 
 class Enemy {
-  constructor(name, hitPoints, attackDamage, attackChance, location) {
+  constructor(name, hitPoints, attackDamage, attackChance) {
     this.name = name;
     this.location = location;
     this.hitPoints = hitPoints;
     this.attackChance = attackChance;
     this.attackDamage = attackDamage;
   }
+  attack(){}
 }
 
+
+const player = new Player()
+
+const entrance = new Room('Entrance', 1, []);
 const hallway = new Room('Hallway', 2, 1);
-// hallway.createEnemy('Sewer Rat', 5, 1 )
 const chamber = new Room('Chamber', 2, 1);
-// chamber.createEnemy('Giant Dragon')
-console.log(hallway)
-console.log(chamber)
+const portal = new Room('Portal', 0, 0);
+
+console.log(entrance)
 class Car {
   constructor(brand, model, registration) {
       this.brand = brand;
@@ -103,7 +110,7 @@ async function gameLoop() {
     const initialActionChoices = [
         { title: 'Look around', value: 'accelerateEtron' },
         { title: 'Go to Room', value: 'accelerateF1' },
-        { title: 'Attack', value: 'info'},
+        { title: 'Attack', value: 'attack'},
         { title: 'Exit game', value: 'exit'}
     ];
 
@@ -128,8 +135,7 @@ async function gameLoop() {
         break;
       
       case 'attack':
-        audi.displayInformation();
-        f1.displayInformation();
+        player.attack();
         break;
       
       case 'exit':
