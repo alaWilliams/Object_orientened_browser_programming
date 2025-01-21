@@ -7,7 +7,6 @@ class Room {
     this.numOfDoorways = numOfDoorways;
     this.enemies = enemies;
     this.moveToRooms = moveToRooms;
-
   }
 }
 
@@ -37,6 +36,7 @@ class Player {
   move() {
     //display the location options
     this.location.moveToRooms.forEach(element => console.log(element));
+    // this.location 
     };
   attack(){
     this.attackChance = Math.floor(Math.random() * 100)
@@ -50,25 +50,60 @@ class Player {
 }
 
 class Enemy {
-  constructor(name, hitPoints, attackDamage, attackChance) {
+  constructor(name, location, hitPoints, attackDamage, attackChance) {
     this.name = name;
     this.location = location;
     this.hitPoints = hitPoints;
     this.attackChance = attackChance;
     this.attackDamage = attackDamage;
   }
-  attack(){}
+
+  attack(){
+    
+  }
 }
 
+let entrance
+let hallway = new Room('Hallway', 2, [rat], ['Entrance', 'Chamber']);
+let chamber
+let portal
+
+class Rat extends Enemy {
+  constructor(name, hitPoints, attackChance, attackDamage, location) {
+    super();
+    this.name = 'Sewer Rat';
+    this.hitPoints = 2;
+    this.attackChance = Math.floor(Math.random() * 100);
+    this.attackDamage = 1;
+    this.location = hallway;
+  }}
+
+  
+  class Dragon extends Enemy {
+    constructor(name, hitPoints, attackChance, attackDamage, location) {
+      super();
+      this.name = 'Giant Dragon';
+      this.hitPoints = 4;
+      this.attackChance = Math.floor(Math.random() * 100);
+      this.attackDamage = 8;
+      this.location = chamber;
+    }}
 
 
-const entrance = new Room('Entrance', 1, [], ['Hallway']);
-const hallway = new Room('Hallway', 2, ['rat'], ['Entrance', 'Chamber']);
-const chamber = new Room('Chamber', 2, ['dragon'], ['Hallway', 'Portal']);
-const portal = new Room('Portal', 0, [], []);
 
 const player = new Player()
-// player.lookAround();
+let rat = new Rat()
+const dragon = new Dragon()
+
+console.log(hallway)
+console.log(rat)
+
+entrance = new Room('Entrance', 1, [], ['Hallway']);
+// hallway = new Room('Hallway', 2, [rat], ['Entrance', 'Chamber']);
+chamber = new Room('Chamber', 2, [dragon], ['Hallway', 'Portal']);
+portal = new Room('Portal', 0, [], []);
+
+
 
 class Car {
   constructor(brand, model, registration) {
@@ -144,6 +179,7 @@ async function gameLoop() {
         break;
       
       case 'goToRoom':
+
         player.move();
         break;
       
