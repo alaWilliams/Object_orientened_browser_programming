@@ -5,6 +5,7 @@ class Room {
 		this.name = name;
 		this.description = description;
 		this.connectingRoom = [];
+		this.enemy = [];
 	}
 
 	addNewRoomConnection(room) {
@@ -13,6 +14,10 @@ class Room {
 
 	getNamesOfConnectingRoom() {
 		return this.connectingRoom.map((room) => room.name);
+	};
+
+	addEnemy(enemy) {
+		this.enemy.push(enemy);
 	}
 }
 
@@ -58,6 +63,8 @@ class Player extends Character {
 		console.log('Attacking');
 	}
 }
+
+class Enemy extends Character {}
 
 const player = new Player();
 player.setLocation(entrance);
