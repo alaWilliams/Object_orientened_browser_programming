@@ -1,0 +1,14 @@
+{
+  "name": "oobp-week1-assignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "week1.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^29.3.1"
+  }
+}

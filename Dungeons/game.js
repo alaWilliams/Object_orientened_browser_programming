@@ -45,7 +45,7 @@ class Character {
 
 class Player extends Character {
 	constructor() {
-		super('Player', null);
+		super('Player', undefined);
 	}
 
 	lookAround() {
@@ -57,10 +57,25 @@ class Player extends Character {
 		console.log(this.location.getNamesOfConnectingRoom());
 	}
 	move() {
-		console.log('Moving');
+			if(this.location === undefined) {
+				console.log('Player location is undefined');
+				return;
+			}
+	
+			const listOfConnectingRoomsFromCurrentLocation = this.location.getConnectingRooms();
+			for(let i = 0; i < listOfConnectingRoomsFromCurrentLocation.length; i++) {
+				if(listOfConnectingRoomsFromCurrentLocation[i].name == roomName) {
+					this.setLocation(listOfConnectingRoomsFromCurrentLocation[i])
+					return;
+				}
+			}
 	}
 	attack() {
 		console.log('Attacking');
+	}
+
+	getLocation() {
+		return this.location
 	}
 }
 
@@ -69,6 +84,7 @@ class Enemy extends Character {}
 const player = new Player();
 player.setLocation(entrance);
 player.lookAround()
+
 async function gameLoop() {
 	let continueGame = true;
 
