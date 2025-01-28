@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+  </head>
+  <body>
+    <h1>JS in browser</h1>
+    <canvas id="canvas" style="border:1px solid black; height: 500px; width: 600px"></canvas>
+
+
+    <script type="text/javascript">
+
+      //access the canvas element
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      // ctx.fillStyle = 'lightgray'
+      // ctx.fillRect(200, 10, 100, 100)
+
+      // ctx.beginPath();
+      // ctx.moveTo(75, 50);
+      // ctx.lineTo(100, 75);
+      // ctx.lineTo(100, 25);
+      // ctx.lineTo(150, 100);
+      // ctx.closePath();
+      // ctx.fillStyle = 'black'
+      // ctx.fill();
+
+      //circle
+     
+
+      class Ball {
+        xCoord;
+        yCoord; 
+        xDirection;
+        xSpeed;
+        radius;
+        constructor(xCoord, yCoord, xSpeed, radius) {
+          this.xCoord = xCoord;
+          this.yCoord = yCoord;
+          this.xSpeed = xSpeed;
+          this.radius = radius;
+        }
+
+        draw() {
+          ctx.clearRect(0, 0, 800, 800);
+          ctx.beginPath();
+            ctx.arc(this.xCoord, this.yCoord, this.radius, 0, 2 * Math.PI);
+          ctx.fillStyle = 'red'
+          ctx.fill();
+        }
+
+        update() {
+          this.xCoord =+ this.xSpeed * this.xDirection;
+          if ((this.xCoord > canvas.width - this.radius || this.xCoord < this.radius))
+          this.
+        }
+      }
+      let x = 100
+      let y = 100
+      let xDirection = 1;
+      let xSpeed = 2;
+
+      let x2 = 50;
+      let y2 = 50;
+      let xDirection2 = -1;
+      let xSpeed2 = 4;
+
+      function update() {
+        ctx.clearRect(0, 0, 800, 800);
+        ctx.beginPath();
+        ctx.arc(x, y, 50, 0, 2 * Math.PI);
+        ctx.fillStyle = 'red'
+        ctx.fill();
+        
+        console.log(x)
+        x += xSpeed * xDirection
+        if (x > canvas.width - 50 || x < 50) {
+          xDirection = -xDirection
+        }
+
+        ctx.clearRect(0, 0, 800, 800);
+        ctx.beginPath();
+        ctx.arc(x2, y2, 50, 0, 2 * Math.PI);
+        ctx.fillStyle = 'green'
+        ctx.fill();
+        
+        console.log(x)
+        x2 += x2Speed * x2Direction
+        if (x2 > canvas.width - 50 || x2 < 50) {
+          x2Direction = -x2Direction
+        }
+        window.requestAnimationFrame(update);
+      }
+
+      window.requestAnimationFrame(update);
+
+      window.requestAnimation
+
+
+    </script>
+  </body>
+
+</html>
