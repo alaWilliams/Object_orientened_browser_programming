@@ -41,6 +41,7 @@ var Room = /** @class */ (function () {
         this.name = name;
         this.description = description;
         this.connectingRooms = [];
+        this.enemies = [];
     }
     Room.prototype.addNewRoomConnection = function (roomToAdd) {
         this.connectingRooms.push(roomToAdd);
@@ -54,9 +55,20 @@ var Room = /** @class */ (function () {
     };
     return Room;
 }());
+var Enemy = /** @class */ (function () {
+    function Enemy(name) {
+        this.name = name;
+    }
+    return Enemy;
+}());
 var entrance = new Room('Entrance', 'It is a cavern with stone stairs leading to the darkness.');
 var hallway = new Room('Hallway', 'It is a long, dark hallway with dark pools of water on the floor and some fungus growing on the walls.');
+var chamber = new Room('Chamber', 'A big cavernous chamber with a high ceiling clouded in mist.');
+var portal = new Room('Portal', 'A portal to another dimension.');
 entrance.addNewRoomConnection(hallway);
+hallway.addNewRoomConnection(chamber);
+chamber.addNewRoomConnection(hallway);
+chamber.addNewRoomConnection(portal);
 var Player = /** @class */ (function () {
     function Player() {
         this.location = undefined;
@@ -142,6 +154,10 @@ function gameLoop() {
                     moveResponse = _b.sent();
                     console.log(moveResponse);
                     player.move(moveResponse.value);
+                    if (player.location === portal) {
+                        console.log("You've reached the portal. You won!");
+                        continueGame = false;
+                    }
                     return [3 /*break*/, 7];
                 case 5: 
                 // player.attack();

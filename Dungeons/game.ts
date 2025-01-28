@@ -5,11 +5,13 @@ class Room {
 	name: string;
 	description : string;
 	connectingRooms : Room[];
+	enemies: Enemy[];
 	
 	constructor(name : string, description : string) {
 		this.name = name;
 		this.description = description;
 		this.connectingRooms = [];
+		this.enemies = []
 		
 	}
 
@@ -24,7 +26,18 @@ class Room {
 	getConnectingRooms() {
 		return this.connectingRooms;
 	}
+
+// 	addEnemy(enemy : Enemy) {}
+// 	this.enemies.push(enemy);
+// }
 }
+class Enemy {
+	name: string;
+	constructor(name: string) {
+		this.name = name;
+	}
+}
+	
 
 const entrance = new Room(
 	'Entrance',
@@ -34,8 +47,20 @@ const hallway = new Room(
 	'Hallway',
 	'It is a long, dark hallway with dark pools of water on the floor and some fungus growing on the walls.'
 );
+const chamber = new Room(
+	'Chamber',
+	'A big cavernous chamber with a high ceiling clouded in mist.'
+);
+const portal = new Room(
+	'Portal',
+	'A portal to another dimension.'
+)
 
-entrance.addNewRoomConnection(hallway)
+
+entrance.addNewRoomConnection(hallway);
+hallway.addNewRoomConnection(chamber);
+chamber.addNewRoomConnection(hallway);
+chamber.addNewRoomConnection(portal);
 
 
 class Player {
@@ -45,7 +70,7 @@ class Player {
     this.location = undefined; 
   }
 
-  setLocation(room : Room) // parameter is of type Room object
+  setLocation(room : Room)
   {
     this.location = room;
   }
@@ -68,6 +93,7 @@ class Player {
 		
 	}
 	move(roomName : string) {
+		
 			if(this.location === undefined) {
 				console.log('Player location is undefined');
 				return;
@@ -79,9 +105,6 @@ class Player {
 			}
 			}
 	}
-	
-
-
 
 
 const player = new Player();
@@ -133,6 +156,10 @@ async function gameLoop() {
 
 		console.log(moveResponse);
 		player.move(moveResponse.value);
+		if (player.location === portal) {
+			console.log(`You've reached the portal. You won!`)
+			continueGame = false;
+		}
 		break;
 
 		
