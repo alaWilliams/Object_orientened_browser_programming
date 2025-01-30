@@ -27,9 +27,15 @@ class Room {
 		return this.connectingRooms;
 	}
 
-// 	addEnemy(enemy : Enemy) {}
-// 	this.enemies.push(enemy);
-// }
+	addEnemy(enemy : Enemy) {
+		this.enemies.push(enemy);
+	}
+	getEnemiesNames() {
+		let names : string[] = []
+		this.enemies.forEach(enemy => names.push(enemy.name));
+		return names;
+	}
+	
 }
 class Enemy {
 	name: string;
@@ -56,12 +62,19 @@ const portal = new Room(
 	'A portal to another dimension.'
 )
 
+const rat = new Enemy('Sewer Rat');
+const rat2 = new Enemy('Small Sewer Rat')
+const dragon = new Enemy('Giant Dragon');
 
 entrance.addNewRoomConnection(hallway);
 hallway.addNewRoomConnection(chamber);
 chamber.addNewRoomConnection(hallway);
 chamber.addNewRoomConnection(portal);
 
+
+hallway.addEnemy(rat);
+hallway.addEnemy(rat2);
+chamber.addEnemy(dragon);
 
 class Player {
 	location : Room | undefined; 
@@ -86,12 +99,14 @@ class Player {
 		console.log(
 			`You look around.\n You are in the ${this.location.name.toLowerCase()}. ${
 				this.location.description
-			} \nThere are doorways leading to: \n`
+			} \nThere are doorways leading to:`
 		);
 		let roomNames = this.location.getNamesOfConnectingRooms();
 		roomNames.forEach(roomName => console.log(`${roomName}`))
 		
-	}
+		console.log(this.location.getEnemiesNames());
+		};
+		
 	move(roomName : string) {
 		
 			if(this.location === undefined) {
@@ -133,7 +148,6 @@ async function gameLoop() {
 
 	switch (response.value) {
 		case 'look':
-			console.log('You look around.')
 			player.lookAround();
 
 			break;
@@ -165,6 +179,25 @@ async function gameLoop() {
 		
 
 		case 'attack':
+			const attackChoices=[]
+			const listOfEnemies = player.getLocation().getEnemiesNames();
+			console.log(listOfEnemies)
+			
+			const attackOptions = listOfEnemies.map(enemy => ({
+				title: enemy,
+				value: enemy
+		}));
+		attackChoices.push(...attackOptions);
+
+		const attackResponse = await prompts({
+			type: 'select',
+			name: 'value',
+			message: 'To which room you want to go to?',
+			choices: attackChoices
+		});
+
+		console.log(attackResponse);
+		player.move(attackResponse.value);
 			// player.attack();
 
 			break;

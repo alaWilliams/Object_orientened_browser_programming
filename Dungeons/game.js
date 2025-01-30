@@ -53,6 +53,14 @@ var Room = /** @class */ (function () {
     Room.prototype.getConnectingRooms = function () {
         return this.connectingRooms;
     };
+    Room.prototype.addEnemy = function (enemy) {
+        this.enemies.push(enemy);
+    };
+    Room.prototype.getEnemiesNames = function () {
+        var names = [];
+        this.enemies.forEach(function (enemy) { return names.push(enemy.name); });
+        return names;
+    };
     return Room;
 }());
 var Enemy = /** @class */ (function () {
@@ -65,10 +73,16 @@ var entrance = new Room('Entrance', 'It is a cavern with stone stairs leading to
 var hallway = new Room('Hallway', 'It is a long, dark hallway with dark pools of water on the floor and some fungus growing on the walls.');
 var chamber = new Room('Chamber', 'A big cavernous chamber with a high ceiling clouded in mist.');
 var portal = new Room('Portal', 'A portal to another dimension.');
+var rat = new Enemy('Sewer Rat');
+var rat2 = new Enemy('Small Sewer Rat');
+var dragon = new Enemy('Giant Dragon');
 entrance.addNewRoomConnection(hallway);
 hallway.addNewRoomConnection(chamber);
 chamber.addNewRoomConnection(hallway);
 chamber.addNewRoomConnection(portal);
+hallway.addEnemy(rat);
+hallway.addEnemy(rat2);
+chamber.addEnemy(dragon);
 var Player = /** @class */ (function () {
     function Player() {
         this.location = undefined;
@@ -84,10 +98,12 @@ var Player = /** @class */ (function () {
             console.log("Location in undefined");
             return;
         }
-        console.log("You look around.\n You are in the ".concat(this.location.name.toLowerCase(), ". ").concat(this.location.description, " \nThere are doorways leading to: \n"));
+        console.log("You look around.\n You are in the ".concat(this.location.name.toLowerCase(), ". ").concat(this.location.description, " \nThere are doorways leading to:"));
         var roomNames = this.location.getNamesOfConnectingRooms();
         roomNames.forEach(function (roomName) { return console.log("".concat(roomName)); });
+        console.log(this.location.getEnemiesNames());
     };
+    ;
     Player.prototype.move = function (roomName) {
         if (this.location === undefined) {
             console.log('Player location is undefined');
@@ -104,7 +120,7 @@ var player = new Player();
 player.setLocation(entrance);
 function gameLoop() {
     return __awaiter(this, void 0, void 0, function () {
-        var continueGame, initialActionChoices, response, _a, moveActionChoices, listOfRoomNames, movementOptions, moveResponse;
+        var continueGame, initialActionChoices, response, _a, moveActionChoices, listOfRoomNames, movementOptions, moveResponse, attackChoices, listOfEnemies, attackOptions, attackResponse;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -129,13 +145,12 @@ function gameLoop() {
                         case 'look': return [3 /*break*/, 2];
                         case 'move': return [3 /*break*/, 3];
                         case 'attack': return [3 /*break*/, 5];
-                        case 'exit': return [3 /*break*/, 6];
+                        case 'exit': return [3 /*break*/, 7];
                     }
-                    return [3 /*break*/, 7];
+                    return [3 /*break*/, 8];
                 case 2:
-                    console.log('You look around.');
                     player.lookAround();
-                    return [3 /*break*/, 7];
+                    return [3 /*break*/, 8];
                 case 3:
                     moveActionChoices = [];
                     listOfRoomNames = player.getLocation().getNamesOfConnectingRooms();
@@ -158,20 +173,38 @@ function gameLoop() {
                         console.log("You've reached the portal. You won!");
                         continueGame = false;
                     }
-                    return [3 /*break*/, 7];
-                case 5: 
-                // player.attack();
-                return [3 /*break*/, 7];
+                    return [3 /*break*/, 8];
+                case 5:
+                    attackChoices = [];
+                    listOfEnemies = player.getLocation().getEnemiesNames();
+                    console.log(listOfEnemies);
+                    attackOptions = listOfEnemies.map(function (enemy) { return ({
+                        title: enemy,
+                        value: enemy
+                    }); });
+                    attackChoices.push.apply(attackChoices, attackOptions);
+                    return [4 /*yield*/, prompts({
+                            type: 'select',
+                            name: 'value',
+                            message: 'To which room you want to go to?',
+                            choices: attackChoices
+                        })];
                 case 6:
-                    continueGame = false;
-                    return [3 /*break*/, 7];
+                    attackResponse = _b.sent();
+                    console.log(attackResponse);
+                    player.move(attackResponse.value);
+                    // player.attack();
+                    return [3 /*break*/, 8];
                 case 7:
-                    if (!continueGame) return [3 /*break*/, 9];
-                    return [4 /*yield*/, gameLoop()];
+                    continueGame = false;
+                    return [3 /*break*/, 8];
                 case 8:
+                    if (!continueGame) return [3 /*break*/, 10];
+                    return [4 /*yield*/, gameLoop()];
+                case 9:
                     _b.sent();
-                    _b.label = 9;
-                case 9: return [2 /*return*/];
+                    _b.label = 10;
+                case 10: return [2 /*return*/];
             }
         });
     });
