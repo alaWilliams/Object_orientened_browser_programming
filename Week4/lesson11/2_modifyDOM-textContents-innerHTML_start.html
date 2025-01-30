@@ -1,34 +1,52 @@
 <html>
-  <head>
-    <style>
-      .demo {
-        font-style: italic;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Exercise template for modifying the DOM</h1>
-    <div>
-      <p id="ExampleID" class="demo">Hello world</p>
-      <p class="demo" name="testName">Some content of paragraph</p>
-      <p class="demo" name="testName">Another content of paragraph</p>
-    </div>
-    <div>
-      <b>Task 1</b>
-      Your task is to write code to replace the "Hello world" text above in the paragraph with text "I can modify text".
-      Create a button here below to activate your code when you click on it.
-    </div>
-    <div>
-      <b>Task 2</b>
-      Write code which replaces the children of all divs with text "I have replaced everything".
-    </div>
-    <div>
-      <b>Task 3</b>
-      Write code, which inserts into a single div containing an image (https://www.w3.org/html/logo/img/html5-display.png) and text "AN HTML5 LOGO". That content should be laid out vertically stacked and centered on the page.
-    </div>
+	<head>
+		<style>
+			.demo {
+				font-style: italic;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Exercise template for modifying the DOM</h1>
+		<div>
+			<p id="ExampleID" class="demo">Hello world</p>
+			<p class="demo" name="testName">Some content of paragraph</p>
+			<p class="demo" name="testName">Another content of paragraph</p>
+		</div>
+		<div>
+			<b>Task 1</b>
+			Your task is to write code to replace the "Hello world" text above in the
+			paragraph with text "I can modify text". Create a button here below to
+			activate your code when you click on it.
+		</div>
+		<div>
+			<b>Task 2</b>
+			Write code which replaces the children of all divs with text "I have
+			replaced everything".
+		</div>
+		<div>
+			<b>Task 3</b>
+			Write code, which inserts into a single div containing an image
+			(https://www.w3.org/html/logo/img/html5-display.png) and text "AN HTML5
+			LOGO". That content should be laid out vertically stacked and centered on
+			the page.
+		</div>
 
-    <script>
-      // Write your javascript code here.
-    </script>
-  </body>
+		<script>
+			//       · Task 1: Write code to replace the “Hello world” text with your own text “I can modify text” when user clicks on a button, which you will also need to create
+			// · Task 2: Write code which replaces the content of every div with text “I have replaced everything”
+			// · Task 3: Write code, which inserts into a single div containing an image (https://www.w3.org/html/logo/img/html5-display.png) and text "AN HTML5 LOGO". That content should be laid out vertically stacked and centered on the page as seen below
+			const divs = document.querySelectorAll('div');
+			const target1 = divs[1];
+			const helloWorld = document.getElementById('ExampleID');
+			const button = document.createElement('button');
+			button.textContent = 'Click here to change text';
+			target1.appendChild(button);
+			button.addEventListener('click', (event) => {
+				helloWorld.textContent = 'I can modify text!';
+			});
+
+			// divs.forEach(element => element.textContent = 'I have replaced everything!');
+		</script>
+	</body>
 </html>
