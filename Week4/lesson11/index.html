@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head></head>
+	<body>
+		<div>Document Object Model</div>
+		<div>Let's learn basic DOM CRUD operations.</div>
+		<div>
+			CRUD is:
+			<ul>
+				<li>Create</li>
+				<li>Read</li>
+				<li>Update/Modify</li>
+				<li>Delete</li>
+			</ul>
+		</div>
+
+		<div id="readTarget">I'll read this element.</div>
+		<div id="modifyTarget">I'll modify this element.</div>
+
+		<script type="text/javascript">
+			// reading contents
+			const element = document.getElementById('readTarget');
+			console.log(element.textContent);
+
+			// modifying element
+			const modifyTarget = document.getElementById('modifyTarget');
+			console.log(modifyTarget.textContent);
+			modifyTarget.textContent = 'New modified content.';
+			modifyTarget.style.backgroundColor = 'pink';
+		</script>
+	</body>
+</html>
