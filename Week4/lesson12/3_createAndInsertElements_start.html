@@ -19,7 +19,7 @@
     </style>
   </head>
   <body>
-    <button>Add product With Create Element</button>
+    <button class="btn">Add product With Create Element</button>
     <!-- Here is the HTML structure for implementation target
 
     <div class="productList">
@@ -37,8 +37,24 @@
       </div>
     </div>
     -->
-    <script>
-      // Your code here
+    <script type="text/javascript">
+      const button = document.querySelector('.btn');
+      const productList = document.createElement('div');
+      productList.className('productList');
+      document.body.appendChild(productList);
+      productList.style.width = '100%';
+      productList.style.height = '500px'
+      productList.style.backgroundColor = 'pink'
+
+      // productList.style.backgroundColor = 'pink'
+      // function addProduct() {
+    
+      // }
+      // button.addEventListener('click', addProduct)
+
+      const element = document.createElement('div');
+      document.body.appendChild(element);
+      
     </script>
   </body>
 </html>

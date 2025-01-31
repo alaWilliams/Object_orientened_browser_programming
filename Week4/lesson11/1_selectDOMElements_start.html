@@ -64,7 +64,7 @@
 				<td>Italy</td>
 			</tr>
 		</table>
-
+		<div id="innerHTML">Inner HTLM</div>
 		<script>
 			// Task1: Write code which prints to the console the value of id attribute of the table element
 			const table = document.getElementsByTagName('table');
@@ -82,6 +82,10 @@
 			const row = document.querySelector('.active');
 			const country = row.querySelector('td:last-child');
 			console.log(country.innerText);
+
+			//inner html
+			const target = document.querySelector('#innerHTML');
+			target.innerHTML = 'New text'
 		</script>
 	</body>
 </html>
