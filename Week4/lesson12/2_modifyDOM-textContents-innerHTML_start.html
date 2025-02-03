@@ -50,19 +50,22 @@
 
 			const newDiv = document.createElement('div');
 			const task3 = document.querySelector('#task3');
-			task3.appendChild(newDiv);
 			newDiv.style.width = '100%';
 			newDiv.style.height = '700px';
+
 			const img = document.createElement('img');
-			newDiv.appendChild(img);
 			img.src = 'https://www.w3.org/html/logo/img/html5-display.png';
 			const textDiv = document.createElement('div');
-			newDiv.appendChild(textDiv);
+			
 			textDiv.textContent = 'AN HTML5 LOGO';
 			newDiv.style.display = 'flex';
 			newDiv.style.flexDirection = 'column';
 			newDiv.style.justifyContent = 'center';
 			newDiv.style.alignItems = 'center';
+
+			task3.appendChild(newDiv);
+			newDiv.appendChild(img);
+			newDiv.appendChild(textDiv);
 		</script>
 	</body>
 </html>
