@@ -27,8 +27,11 @@
         const a = document.querySelector('#a');
         const b = document.querySelector('#b');
         const result = document.querySelector('#result');
-
+        const log = document.querySelector('#log');
+        let operationsDiv = document.createElement('div');
+        log.appendChild(operationsDiv);
         result.value = a.value * b.value;
+        operationsDiv.textContent = `${a.value} * ${b.value} = ${result.value}`
       }
     </script>
   </body>
