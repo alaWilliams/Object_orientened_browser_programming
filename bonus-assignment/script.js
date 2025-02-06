@@ -17,8 +17,13 @@ button.addEventListener('click', () => {
 	const timeValue = readValue(timeInput);
 	const interestRateValue = readValue(interestRateInput)
 	const contribution = calculateContributionAfterOneYear(monthlyContributionValue, initialInvestmentValue)
-	createTable(interestRateValue, contribution);
+	const invValue = calculateInvestmentValueAfterOneYear(initialInvestmentValue, monthlyContributionValue, interestRateValue);
 
+	
+	for ( let i = 0; i <= timeValue; i++) {
+		createTable(invValue, interestRateValue, contribution, timeValue);
+		console.log(`table ${i}`)
+	}
 });
 
 function calculateInvestmentValue(initial, monthly, interest, time) {
@@ -45,7 +50,7 @@ function calculateInvestmentValueAfterOneYear(initial, monthly, interest) {
 
 
 
-function createTable(interest, contribution) {
+function createTable(invValue,interest, contribution, years) {
 	result.innerHTML = '';
 	const table = document.createElement('table')
 	table.className = 'investmentTable'
@@ -54,16 +59,15 @@ function createTable(interest, contribution) {
       <th>Years</th>
       <th>Investment Value ${interest}%</th>
       <th>Total contribution</th>
-    </tr>
-    <tr>
-      <td>value1</td>
-      <td>value2</td>
-      <td>${contribution}</td>
-    </tr>
-    <tr>
-      <td>value4</td>
-      <td>value5</td>
-      <td>value6</td>
     </tr>`
+ 
+	for (let i = 0; i <= years; i++) {
+		table.innerHTML += `
+		<tr>
+		    <td>${i}</td>
+		    <td>${invValue}</td>
+		    <td>${contribution}</td>
+		  </tr>`
+	}
 }
 
