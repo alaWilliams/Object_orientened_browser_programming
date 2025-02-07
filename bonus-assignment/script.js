@@ -11,10 +11,10 @@ function readValue(input) {
 	return Number(input.value);
 }
 
+//adding event handler
 button.addEventListener('click', () => {
 	eventHandler()
 });
-
 body.addEventListener('keypress', function(event){
 	if (event.key === "Enter") {
 		eventHandler()
@@ -33,10 +33,15 @@ function eventHandler() {
 		interestRateValue,
 		timeValue
 	)}
+
 	
+//function that dynamically creates the table
 function createTable(initial, monthly, interest, years) {
+
+	//clearing the result div
 	result.innerHTML = '';
 
+	//error handling
 	const errorMessage = document.createElement('div');
 	errorMessage.className = 'errorMessage';
 
@@ -58,7 +63,7 @@ function createTable(initial, monthly, interest, years) {
 		errorMessage.textContent =
 			'Initial investment OR monthly contribution must be greater than zero.';
 		result.appendChild(errorMessage);
-	} else {
+	} else { //creating table
 		const table = document.createElement('table');
 		table.className = 'investmentTable';
 		result.appendChild(table);
@@ -68,6 +73,7 @@ function createTable(initial, monthly, interest, years) {
       <th class='table-head'>Total contribution</th>
     </tr>`;
 
+		//calculating values
 		let totalContribution = initial;
 		let totalValue = initial;
 		let rate = interest / 100;
@@ -78,7 +84,7 @@ function createTable(initial, monthly, interest, years) {
 				totalContribution += monthly * 12;
 				totalValue = (totalValue + contributionInAYear) * (1 + rate);
 			}
-
+			//creating rows and inserting values
 			table.innerHTML += `
 		<tr>
 		    <td>${i}</td>
