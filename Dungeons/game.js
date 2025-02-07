@@ -64,18 +64,35 @@ var Room = /** @class */ (function () {
     return Room;
 }());
 var Enemy = /** @class */ (function () {
-    function Enemy(name) {
+    function Enemy(name, description, weapon, hitPoints, attackDamage, chanceOfAttackHit) {
         this.name = name;
+        this.description = description;
+        this.weapon = weapon;
+        this.hitPoints = hitPoints;
+        this.attackDamage = attackDamage;
+        this.chanceOfAttackHit = chanceOfAttackHit;
     }
+    Enemy.prototype.calculateAttackDamage = function () {
+        return 1;
+    };
+    Enemy.prototype.attack = function () {
+        var attackDamage = Math.floor(Math.random() * 100);
+        if (attackDamage > this.chanceOfAttackHit) {
+            console.log("".concat(this.name, " attacks you with ").concat(this.weapon.toLocaleLowerCase(), "! \n The attack was successful and you are hit."));
+        }
+        else {
+            console.log("".concat(this.name, " attacks you with ").concat(this.weapon.toLowerCase(), "! \n The attack failed, you've defended yourself."));
+        }
+    };
     return Enemy;
 }());
 var entrance = new Room('Entrance', 'It is a cavern with stone stairs leading to the darkness.');
 var hallway = new Room('Hallway', 'It is a long, dark hallway with dark pools of water on the floor and some fungus growing on the walls.');
 var chamber = new Room('Chamber', 'A big cavernous chamber with a high ceiling clouded in mist.');
-var portal = new Room('Portal', 'A portal to another dimension.');
-var rat = new Enemy('Sewer Rat');
-var rat2 = new Enemy('Small Sewer Rat');
-var dragon = new Enemy('Giant Dragon');
+var portal = new Room('Glowing portal', 'A portal to another dimension.');
+var rat = new Enemy('Sewer Rat', 'A scrappy, disease-ridden rodent scurrying through the damp, filthy tunnels, always ready to bite.', 'Sharp teeth', 2, 1, 50);
+var rat2 = new Enemy('Small Sewer Rat', 'A tiny, quick rodent with beady eyes and a knack for darting into dark corners to avoid danger.', 'Small sharp teeth', 2, 1, 25);
+var dragon = new Enemy('Giant Dragon', 'Towering above, this fearsome dragon breathes fire, its scales glistening like molten lava as it guards the deepest secrets of the sewer.', 'Sharp claws and fire breath', 4, 8, 80);
 entrance.addNewRoomConnection(hallway);
 hallway.addNewRoomConnection(chamber);
 hallway.addNewRoomConnection(entrance);
@@ -85,9 +102,12 @@ hallway.addEnemy(rat);
 hallway.addEnemy(rat2);
 chamber.addEnemy(dragon);
 var Player = /** @class */ (function () {
-    function Player() {
-        this.player = new Player();
+    function Player(weapon, hitPoints, attackDamage, chanceOfAttackHit) {
         this.location = undefined;
+        this.weapon = weapon;
+        this.hitPoints = hitPoints;
+        this.attackDamage = attackDamage;
+        this.chanceOfAttackHit = chanceOfAttackHit;
     }
     Player.prototype.setLocation = function (room) {
         this.location = room;
@@ -102,26 +122,39 @@ var Player = /** @class */ (function () {
         }
         console.log("You look around.\n You are in the ".concat(this.location.name.toLowerCase(), ". ").concat(this.location.description, " \nThere are doorways leading to:"));
         var roomNames = this.location.getNamesOfConnectingRooms();
-        roomNames.forEach(function (roomName) { return console.log("".concat(roomName)); });
-        console.log(this.location.getEnemiesNames());
-        if (this.location.getEnemiesNames().length === 0) {
-            return 'There is no enemy here';
+        roomNames.forEach(function (roomName) {
+            return console.log("".concat(roomName));
+        });
+        var enemiesName = this.location.getEnemiesNames();
+        if (enemiesName.length > 0) {
+            console.log("You see an enemy ".concat(enemiesName.join(', '), "."));
+            console.log(this.location.enemies.map(function (enemy) { return "".concat(enemy.name, " is ").concat(enemy.description.toLowerCase()); }).join('\n'));
         }
-        ;
-        move(roomName, string);
-        {
-            if (this.location === undefined) {
-                console.log('Player location is undefined');
-                return;
-            }
-            var nextRoom = this.location.getConnectingRooms().find(function (room) { return room.name === roomName; });
-            if (nextRoom) {
-                this.setLocation(nextRoom);
-            }
+    };
+    Player.prototype.move = function (roomName) {
+        if (this.location === undefined) {
+            console.log('Player location is undefined');
+            return;
+        }
+        var nextRoom = this.location.getConnectingRooms().find(function (room) { return room.name === roomName; });
+        if (nextRoom) {
+            this.setLocation(nextRoom);
+        }
+    };
+    Player.prototype.attack = function (enemiesName) {
+        console.log('Attacking' + enemiesName);
+        var attackDamage = Math.floor(Math.random() * 100);
+        if (attackDamage > this.chanceOfAttackHit) {
+            console.log('The attack was successful');
+        }
+        else {
+            console.log('The attack failed');
         }
     };
     return Player;
 }());
+var player = new Player('Sharp sword', 10, 2, 75);
+player.setLocation(entrance);
 function gameLoop() {
     return __awaiter(this, void 0, void 0, function () {
         var continueGame, initialActionChoices, response, _a, moveActionChoices, listOfRoomNames, movementOptions, moveResponse, attackChoices, listOfEnemies, attackOptions, attackResponse;
@@ -154,6 +187,9 @@ function gameLoop() {
                     return [3 /*break*/, 8];
                 case 2:
                     player.lookAround();
+                    if (player.location.enemies.length > 0) {
+                        player.location.enemies[0].attack();
+                    }
                     return [3 /*break*/, 8];
                 case 3:
                     moveActionChoices = [];
@@ -181,7 +217,6 @@ function gameLoop() {
                 case 5:
                     attackChoices = [];
                     listOfEnemies = player.getLocation().getEnemiesNames();
-                    console.log(listOfEnemies);
                     attackOptions = listOfEnemies.map(function (enemy) { return ({
                         title: enemy,
                         value: enemy
@@ -195,8 +230,7 @@ function gameLoop() {
                         })];
                 case 6:
                     attackResponse = _b.sent();
-                    player.move(attackResponse.value);
-                    // player.attack();
+                    player.attack(attackResponse.value);
                     return [3 /*break*/, 8];
                 case 7:
                     continueGame = false;

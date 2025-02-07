@@ -1,49 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment Return Calculator</title>
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-</head>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Investment Return Calculator</title>
+		<link rel="stylesheet" href="./styles.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
 
-<html>
-  <body>
-    <h1 class="header">Investment Return Calculator</h1>
+	<html>
+		<body>
+			<h1 class="header">Investment Return Calculator</h1>
 
-    
-      <div class="instructions">The Investment Return Calculator helps you estimate how your savings will grow over time with compound interest. You can enter your initial investment, monthly contributions, investment period, and expected annual interest rate to see a detailed breakdown of your investment growth.</div>
+			<div class="instructions">
+				The Investment Return Calculator helps you estimate how your savings
+				will grow over time with compound interest. You can enter your initial
+				investment, monthly contributions, investment period, and expected
+				annual interest rate to see a detailed breakdown of your investment
+				growth.
+			</div>
 
-    <div class="container">
-      <form id="investmentForm">
-        <div class="input-wrapper">
-          <label for="initialInvestment">Initial investment:</label>
-          <input type="number" id="initialInvestment" min="0" required>
-    
-          <label for="monthlyContribution">Monthly contribution:</label>
-          <input type="number" id="monthlyContribution" min="0" required>
-    
-          <label for="time">Investment time (in years):</label>
-          <input type="number" id="time" min="1" required>
-    
-          <label for="interestRate">Interest rate (%):</label>
-          <input type="number" id="interestRate" step="0.01" min="0" required>
-        </div>
-    
-        <button type="button" id="calculate" class="button">Calculate</button>
-      </form>
+			<div class="container">
+				<form id="investmentForm">
+					<div class="input-wrapper">
+						<label for="initialInvestment">Initial investment:</label>
+						<input type="number" id="initialInvestment" min="0" required />
 
-      <div id="results"></div>
+						<label for="monthlyContribution">Monthly contribution:</label>
+						<input type="number" id="monthlyContribution" min="0" required />
 
-    </div>
-    
+						<label for="time">Investment time (in years):</label>
+						<input type="number" id="time" min="1" required />
 
-    <script type="text/javascript" src="./script.js"></script>
+						<label for="interestRate">Interest rate (%):</label>
+						<input
+							type="number"
+							id="interestRate"
+							step="0.01"
+							min="0"
+							required
+						/>
+					</div>
 
-  </body>
+					<button type="button" id="calculate" class="button">Calculate</button>
+				</form>
 
+				<div id="results"></div>
+			</div>
+
+			<script type="text/javascript" src="./script.js"></script>
+		</body>
+	</html>
 </html>
-      

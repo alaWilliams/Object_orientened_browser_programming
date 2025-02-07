@@ -39,10 +39,36 @@ class Room {
 }
 class Enemy {
 	name: string;
-	constructor(name: string) {
+	description: string;
+	weapon: string;
+	hitPoints: number;
+	attackDamage: number;
+	chanceOfAttackHit: number;
+
+	constructor(name: string, description: string, weapon: string, hitPoints: number, attackDamage: number, chanceOfAttackHit: number) {
 		this.name = name;
+		this.description = description;
+		this.weapon = weapon;
+		this.hitPoints = hitPoints;
+		this.attackDamage = attackDamage;
+		this.chanceOfAttackHit = chanceOfAttackHit;
 	}
-}
+
+	calculateAttackDamage() : number {
+		return 1
+	}
+
+	attack() {
+		let attackDamage = Math.floor(Math.random() * 100);
+		if (attackDamage > this.chanceOfAttackHit) {
+			console.log(`${this.name} attacks you with ${this.weapon.toLocaleLowerCase()}! \n The attack was successful and you are hit.`)
+		} else {
+			console.log(`${this.name} attacks you with ${this.weapon.toLowerCase()}! \n The attack failed, you've defended yourself.`)
+		}
+	}
+
+	}
+
 
 
 
@@ -59,13 +85,13 @@ const chamber = new Room(
 	'A big cavernous chamber with a high ceiling clouded in mist.'
 );
 const portal = new Room(
-	'Portal',
+	'Glowing portal',
 	'A portal to another dimension.'
 )
 
-const rat = new Enemy('Sewer Rat');
-const rat2 = new Enemy('Small Sewer Rat')
-const dragon = new Enemy('Giant Dragon');
+const rat = new Enemy('Sewer Rat', 'A scrappy, disease-ridden rodent scurrying through the damp, filthy tunnels, always ready to bite.', 'Sharp teeth', 2, 1, 50);
+const rat2 = new Enemy('Small Sewer Rat', 'A tiny, quick rodent with beady eyes and a knack for darting into dark corners to avoid danger.', 'Small sharp teeth', 2, 1, 25)
+const dragon = new Enemy('Giant Dragon', 'Towering above, this fearsome dragon breathes fire, its scales glistening like molten lava as it guards the deepest secrets of the sewer.', 'Sharp claws and fire breath', 4, 8, 80);
 
 entrance.addNewRoomConnection(hallway);
 hallway.addNewRoomConnection(chamber);
@@ -80,9 +106,17 @@ chamber.addEnemy(dragon);
 
 class Player {
 	location: Room | undefined;
+	weapon: string;
+	hitPoints: number;
+	attackDamage: number;
+	chanceOfAttackHit: number;
 
-	constructor() {
+	constructor(weapon: string, hitPoints: number, attackDamage: number, chanceOfAttackHit: number) {
 		this.location = undefined;
+		this.weapon = weapon;
+		this.hitPoints = hitPoints;
+		this.attackDamage = attackDamage;
+		this.chanceOfAttackHit = chanceOfAttackHit;
 	}
 
 	setLocation(room: Room) {
@@ -107,11 +141,13 @@ class Player {
 		
 		const enemiesName = this.location.getEnemiesNames();
 		
-		if (enemiesName.length === 0) {
-			return 'There is no enemy here'
-		} else {
-			return `Enemies: ${enemiesName.join(', ')}`;
+
+		if (enemiesName.length > 0) {
+			console.log(`You see an enemy ${enemiesName.join(', ')}.`)
+			console.log(this.location.enemies.map(enemy => `${enemy.name} is ${enemy.description.toLowerCase()}`).join('\n'))
+			
 		}
+
 	}
 
 	move(roomName: string) {
@@ -125,10 +161,20 @@ class Player {
 			this.setLocation(nextRoom);
 		}
 	}
+
+	attack(enemiesName: string) {
+		console.log('Attacking' + enemiesName)
+		let attackDamage = Math.floor(Math.random() * 100);
+		if (attackDamage > this.chanceOfAttackHit) {
+			console.log('The attack was successful')
+		} else {
+			console.log('The attack failed')
+		}
+	}
 }
 
 
-const player = new Player()
+const player = new Player('Sharp sword', 10, 2, 75)
 player.setLocation(entrance)
 
 async function gameLoop() {
@@ -155,6 +201,9 @@ async function gameLoop() {
 	switch (response.value) {
 		case 'look':
 			player.lookAround();
+			if (player.location.enemies.length > 0) {
+				player.location.enemies[0].attack();
+			}
 
 			break;
 
@@ -187,7 +236,6 @@ async function gameLoop() {
 		case 'attack':
 			const attackChoices = []
 			const listOfEnemies = player.getLocation().getEnemiesNames();
-			console.log(listOfEnemies)
 
 			const attackOptions = listOfEnemies.map(enemy => ({
 				title: enemy,
@@ -202,8 +250,8 @@ async function gameLoop() {
 				choices: attackChoices
 			});
 
-			player.move(attackResponse.value);
-			// player.attack();
+			player.attack(attackResponse.value);
+		
 
 			break;
 

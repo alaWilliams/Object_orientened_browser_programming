@@ -59,10 +59,6 @@ function createTable(initial, monthly, interest, years) {
 		errorMessage.textContent =
 			'Monthly contribution must be greater than zero.';
 		result.appendChild(errorMessage);
-	} else if (initial <= 0 && monthly <= 0) {
-		errorMessage.textContent =
-			'Initial investment OR monthly contribution must be greater than zero.';
-		result.appendChild(errorMessage);
 	} else { //creating table
 		const table = document.createElement('table');
 		table.className = 'investmentTable';

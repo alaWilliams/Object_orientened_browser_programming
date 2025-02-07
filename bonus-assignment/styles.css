@@ -14,6 +14,7 @@ body {
 .instructions {
   font-size: 1.25rem;
   margin-bottom: 2rem;
+  padding: 0 2rem;
 }
 .input-wrapper {
   display: flex;
@@ -22,6 +23,7 @@ body {
 }
 #investmentForm {
   font-size: 1.25rem;
+  padding: 0 1rem;
 }
 
 input {
@@ -40,6 +42,7 @@ input {
   margin: 1rem auto;
   background-color: hsl(120 62% 34%);
   color: hsl(120, 7%, 91%);
+  cursor: pointer;
 }
 
 
