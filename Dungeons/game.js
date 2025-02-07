@@ -78,6 +78,7 @@ var rat2 = new Enemy('Small Sewer Rat');
 var dragon = new Enemy('Giant Dragon');
 entrance.addNewRoomConnection(hallway);
 hallway.addNewRoomConnection(chamber);
+hallway.addNewRoomConnection(entrance);
 chamber.addNewRoomConnection(hallway);
 chamber.addNewRoomConnection(portal);
 hallway.addEnemy(rat);
@@ -85,6 +86,7 @@ hallway.addEnemy(rat2);
 chamber.addEnemy(dragon);
 var Player = /** @class */ (function () {
     function Player() {
+        this.player = new Player();
         this.location = undefined;
     }
     Player.prototype.setLocation = function (room) {
@@ -102,22 +104,24 @@ var Player = /** @class */ (function () {
         var roomNames = this.location.getNamesOfConnectingRooms();
         roomNames.forEach(function (roomName) { return console.log("".concat(roomName)); });
         console.log(this.location.getEnemiesNames());
-    };
-    ;
-    Player.prototype.move = function (roomName) {
-        if (this.location === undefined) {
-            console.log('Player location is undefined');
-            return;
+        if (this.location.getEnemiesNames().length === 0) {
+            return 'There is no enemy here';
         }
-        var nextRoom = this.location.getConnectingRooms().find(function (room) { return room.name === roomName; });
-        if (nextRoom) {
-            this.setLocation(nextRoom);
+        ;
+        move(roomName, string);
+        {
+            if (this.location === undefined) {
+                console.log('Player location is undefined');
+                return;
+            }
+            var nextRoom = this.location.getConnectingRooms().find(function (room) { return room.name === roomName; });
+            if (nextRoom) {
+                this.setLocation(nextRoom);
+            }
         }
     };
     return Player;
 }());
-var player = new Player();
-player.setLocation(entrance);
 function gameLoop() {
     return __awaiter(this, void 0, void 0, function () {
         var continueGame, initialActionChoices, response, _a, moveActionChoices, listOfRoomNames, movementOptions, moveResponse, attackChoices, listOfEnemies, attackOptions, attackResponse;
@@ -186,12 +190,11 @@ function gameLoop() {
                     return [4 /*yield*/, prompts({
                             type: 'select',
                             name: 'value',
-                            message: 'To which room you want to go to?',
+                            message: 'Which enemy do you want to attack?',
                             choices: attackChoices
                         })];
                 case 6:
                     attackResponse = _b.sent();
-                    console.log(attackResponse);
                     player.move(attackResponse.value);
                     // player.attack();
                     return [3 /*break*/, 8];

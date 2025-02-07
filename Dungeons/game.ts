@@ -3,23 +3,23 @@ const { list } = require('prompts/dist/prompts');
 
 class Room {
 	name: string;
-	description : string;
-	connectingRooms : Room[];
+	description: string;
+	connectingRooms: Room[];
 	enemies: Enemy[];
-	
-	constructor(name : string, description : string) {
+
+	constructor(name: string, description: string) {
 		this.name = name;
 		this.description = description;
 		this.connectingRooms = [];
 		this.enemies = []
-		
+
 	}
 
-	addNewRoomConnection(roomToAdd : Room) {
+	addNewRoomConnection(roomToAdd: Room) {
 		this.connectingRooms.push(roomToAdd);
 	}
 
-	getNamesOfConnectingRooms() : string[] {
+	getNamesOfConnectingRooms(): string[] {
 		return this.connectingRooms.map((room) => room.name);
 	};
 
@@ -27,15 +27,15 @@ class Room {
 		return this.connectingRooms;
 	}
 
-	addEnemy(enemy : Enemy) {
+	addEnemy(enemy: Enemy) {
 		this.enemies.push(enemy);
 	}
 	getEnemiesNames() {
-		let names : string[] = []
+		let names: string[] = []
 		this.enemies.forEach(enemy => names.push(enemy.name));
 		return names;
 	}
-	
+
 }
 class Enemy {
 	name: string;
@@ -43,7 +43,8 @@ class Enemy {
 		this.name = name;
 	}
 }
-	
+
+
 
 const entrance = new Room(
 	'Entrance',
@@ -68,6 +69,7 @@ const dragon = new Enemy('Giant Dragon');
 
 entrance.addNewRoomConnection(hallway);
 hallway.addNewRoomConnection(chamber);
+hallway.addNewRoomConnection(entrance)
 chamber.addNewRoomConnection(hallway);
 chamber.addNewRoomConnection(portal);
 
@@ -77,53 +79,57 @@ hallway.addEnemy(rat2);
 chamber.addEnemy(dragon);
 
 class Player {
-	location : Room | undefined; 
+	location: Room | undefined;
 
-  constructor() {
-    this.location = undefined; 
-  }
+	constructor() {
+		this.location = undefined;
+	}
 
-  setLocation(room : Room)
-  {
+	setLocation(room: Room) {
     this.location = room;
   }
 
-	getLocation() {
+  getLocation(): Room | undefined {
     return this.location;
   }
 	lookAround() {
 		if (this.location == undefined) {
 			console.log(`Location in undefined`);
-			return
+			return;
 		}
 		console.log(
-			`You look around.\n You are in the ${this.location.name.toLowerCase()}. ${
-				this.location.description
+			`You look around.\n You are in the ${this.location.name.toLowerCase()}. ${this.location.description
 			} \nThere are doorways leading to:`
 		);
 		let roomNames = this.location.getNamesOfConnectingRooms();
-		roomNames.forEach(roomName => console.log(`${roomName}`))
+		roomNames.forEach(roomName => 
+			console.log(`${roomName}`));
 		
-		console.log(this.location.getEnemiesNames());
-		};
+		const enemiesName = this.location.getEnemiesNames();
 		
-	move(roomName : string) {
-		
-			if(this.location === undefined) {
-				console.log('Player location is undefined');
-				return;
-			}
-	
-			const nextRoom = this.location.getConnectingRooms().find(room => room.name === roomName);
-			if (nextRoom) {
-					this.setLocation(nextRoom);
-			}
-			}
+		if (enemiesName.length === 0) {
+			return 'There is no enemy here'
+		} else {
+			return `Enemies: ${enemiesName.join(', ')}`;
+		}
 	}
 
+	move(roomName: string) {
+		if (this.location === undefined) {
+			console.log('Player location is undefined');
+			return;
+		}
 
-const player = new Player();
-player.setLocation(entrance);
+		const nextRoom = this.location.getConnectingRooms().find(room => room.name === roomName);
+		if (nextRoom) {
+			this.setLocation(nextRoom);
+		}
+	}
+}
+
+
+const player = new Player()
+player.setLocation(entrance)
 
 async function gameLoop() {
 	let continueGame = true;
@@ -136,7 +142,7 @@ async function gameLoop() {
 		{ title: 'Exit game', value: 'exit' },
 	];
 
-	
+
 	const response = await prompts({
 		type: 'select',
 		name: 'value',
@@ -158,46 +164,45 @@ async function gameLoop() {
 			const movementOptions = listOfRoomNames.map(roomName => ({
 				title: roomName,
 				value: roomName
-		}));
-		moveActionChoices.push(...movementOptions);
+			}));
+			moveActionChoices.push(...movementOptions);
 
-		const moveResponse = await prompts({
-			type: 'select',
-			name: 'value',
-			message: 'To which room you want to go to?',
-			choices: moveActionChoices
-		});
+			const moveResponse = await prompts({
+				type: 'select',
+				name: 'value',
+				message: 'To which room you want to go to?',
+				choices: moveActionChoices
+			});
 
-		console.log(moveResponse);
-		player.move(moveResponse.value);
-		if (player.location === portal) {
-			console.log(`You've reached the portal. You won!`)
-			continueGame = false;
-		}
-		break;
+			console.log(moveResponse);
+			player.move(moveResponse.value);
+			if (player.location === portal) {
+				console.log(`You've reached the portal. You won!`)
+				continueGame = false;
+			}
+			break;
 
-		
+
 
 		case 'attack':
-			const attackChoices=[]
+			const attackChoices = []
 			const listOfEnemies = player.getLocation().getEnemiesNames();
 			console.log(listOfEnemies)
-			
+
 			const attackOptions = listOfEnemies.map(enemy => ({
 				title: enemy,
 				value: enemy
-		}));
-		attackChoices.push(...attackOptions);
+			}));
+			attackChoices.push(...attackOptions);
 
-		const attackResponse = await prompts({
-			type: 'select',
-			name: 'value',
-			message: 'To which room you want to go to?',
-			choices: attackChoices
-		});
+			const attackResponse = await prompts({
+				type: 'select',
+				name: 'value',
+				message: 'Which enemy do you want to attack?',
+				choices: attackChoices
+			});
 
-		console.log(attackResponse);
-		player.move(attackResponse.value);
+			player.move(attackResponse.value);
 			// player.attack();
 
 			break;
@@ -209,7 +214,7 @@ async function gameLoop() {
 	}
 
 	if (continueGame) {
-		await gameLoop(); 
+		await gameLoop();
 	}
 }
 
