@@ -72,13 +72,16 @@ var Enemy = /** @class */ (function () {
         this.attackDamage = attackDamage;
         this.chanceOfAttackHit = chanceOfAttackHit;
     }
-    Enemy.prototype.calculateAttackDamage = function () {
-        return 1;
-    };
-    Enemy.prototype.attack = function () {
-        var attackDamage = Math.floor(Math.random() * 100);
-        if (attackDamage > this.chanceOfAttackHit) {
-            console.log("".concat(this.name, " attacks you with ").concat(this.weapon.toLocaleLowerCase(), "! \n The attack was successful and you are hit."));
+    Enemy.prototype.attack = function (player) {
+        var attackPoints = Math.floor(Math.random() * 100);
+        if (attackPoints < this.chanceOfAttackHit) {
+            player.hitPoints -= this.attackDamage;
+            if (player.hitPoints <= 0) {
+                console.log("The attack of ".concat(this.name, " was fatal. You've died"));
+            }
+            else {
+                console.log("".concat(this.name, " attacks you with ").concat(this.weapon.toLocaleLowerCase(), "! \n The attack was successful and you are hit. The ").concat(this.name.toLowerCase(), " causes ").concat(this.attackDamage, " damage, you have ").concat(player.hitPoints, " health points left"));
+            }
         }
         else {
             console.log("".concat(this.name, " attacks you with ").concat(this.weapon.toLowerCase(), "! \n The attack failed, you've defended yourself."));
@@ -188,7 +191,11 @@ function gameLoop() {
                 case 2:
                     player.lookAround();
                     if (player.location.enemies.length > 0) {
-                        player.location.enemies[0].attack();
+                        player.location.enemies[0].attack(player);
+                    }
+                    if (player.hitPoints <= 0) {
+                        console.log("The game has ended");
+                        continueGame = false;
                     }
                     return [3 /*break*/, 8];
                 case 3:
@@ -231,6 +238,10 @@ function gameLoop() {
                 case 6:
                     attackResponse = _b.sent();
                     player.attack(attackResponse.value);
+                    if (player.hitPoints <= 0) {
+                        console.log("The game has ended");
+                        continueGame = false;
+                    }
                     return [3 /*break*/, 8];
                 case 7:
                     continueGame = false;

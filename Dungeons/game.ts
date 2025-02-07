@@ -44,6 +44,7 @@ class Enemy {
 	hitPoints: number;
 	attackDamage: number;
 	chanceOfAttackHit: number;
+	player: Player;
 
 	constructor(name: string, description: string, weapon: string, hitPoints: number, attackDamage: number, chanceOfAttackHit: number) {
 		this.name = name;
@@ -54,22 +55,23 @@ class Enemy {
 		this.chanceOfAttackHit = chanceOfAttackHit;
 	}
 
-	calculateAttackDamage() : number {
-		return 1
-	}
 
-	attack() {
-		let attackDamage = Math.floor(Math.random() * 100);
-		if (attackDamage > this.chanceOfAttackHit) {
-			console.log(`${this.name} attacks you with ${this.weapon.toLocaleLowerCase()}! \n The attack was successful and you are hit.`)
+	attack(player: Player) {
+		let attackPoints = Math.floor(Math.random() * 100);
+		
+		if (attackPoints < this.chanceOfAttackHit) {
+			player.hitPoints -= this.attackDamage
+			if (player.hitPoints <= 0) {
+				console.log(`The attack of ${this.name} was fatal. You've died`)
+			} else {
+				console.log(`${this.name} attacks you with ${this.weapon.toLocaleLowerCase()}! \n The attack was successful and you are hit. The ${this.name.toLowerCase()} causes ${this.attackDamage} damage, you have ${player.hitPoints} health points left`)
+			}
+			
 		} else {
 			console.log(`${this.name} attacks you with ${this.weapon.toLowerCase()}! \n The attack failed, you've defended yourself.`)
 		}
 	}
-
 	}
-
-
 
 
 const entrance = new Room(
@@ -202,7 +204,11 @@ async function gameLoop() {
 		case 'look':
 			player.lookAround();
 			if (player.location.enemies.length > 0) {
-				player.location.enemies[0].attack();
+				player.location.enemies[0].attack(player);
+			}
+			if (player.hitPoints <= 0) {
+				console.log(`The game has ended`)
+				continueGame = false
 			}
 
 			break;
@@ -251,6 +257,10 @@ async function gameLoop() {
 			});
 
 			player.attack(attackResponse.value);
+			if (player.hitPoints <= 0) {
+				console.log(`The game has ended`)
+				continueGame = false
+			}
 		
 
 			break;
