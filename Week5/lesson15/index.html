@@ -1,0 +1,66 @@
+<!-- 5items, dropdown disappear -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      li {
+        list-style-type: none;
+        cursor: pointer;
+        width: 100%;
+          }
+
+       li:hover { 
+        background-color: lightblue;}
+
+        .input {
+          height:2.5rem
+        }
+
+        .wrapper {
+          width: 200px;
+        }
+        .input {
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        ul {
+          width: 100%;
+          box-sizing: border-box;
+        }
+    </style>
+  </head>
+  <body>
+    <h1> Input </h1>
+    <div class="wrapper">
+      <input id="input" type="text" class="input" placeholder="Where are you going?">
+    </div>
+    
+
+    <script> 
+
+    const input = document.getElementById("input");
+    const wrapper = document.querySelector('.wrapper')
+    let list
+
+    input.addEventListener("focus", () => {
+
+      list = document.createElement("ul")
+      wrapper.appendChild(list)
+
+      list.innerHTML = `<li>Helsinki</li>
+      <li>Tampere</li>
+      <li>Oulu</li>
+      <li>Kuopio</li>
+      <li>Turku</li>`
+
+    })
+
+    input.addEventListener('focusout', () => {
+      list.remove()
+    })
+  
+
+    </script>
+  </body>
+</html>
