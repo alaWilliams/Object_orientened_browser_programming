@@ -4,77 +4,88 @@ const monthlyContributionInput = document.querySelector('#monthlyContribution');
 const timeInput = document.querySelector('#time');
 const interestRateInput = document.querySelector('#interestRate');
 const result = document.querySelector('#results');
+const body = document.querySelector('body')
 
 //reading values
 function readValue(input) {
-	return Number(input.value)
+	return Number(input.value);
 }
-
 
 button.addEventListener('click', () => {
-	const initialInvestmentValue = readValue(initialInvestmentInput)
-	const monthlyContributionValue = readValue(monthlyContributionInput)
+	eventHandler()
+});
+
+body.addEventListener('keypress', function(event){
+	if (event.key === "Enter") {
+		eventHandler()
+}})
+
+
+function eventHandler() {
+	const initialInvestmentValue = readValue(initialInvestmentInput);
+	const monthlyContributionValue = readValue(monthlyContributionInput);
 	const timeValue = readValue(timeInput);
-	const interestRateValue = readValue(interestRateInput)
+	const interestRateValue = readValue(interestRateInput);
+
+	createTable(
+		initialInvestmentValue,
+		monthlyContributionValue,
+		interestRateValue,
+		timeValue
+	)}
 	
-
-	
-		createTable(initialInvestmentValue, monthlyContributionValue,interestRateValue,  timeValue);
-	}
-);
-
-function calculateInvestmentValue(initial, monthly, interest, time) {
-	let rate = interest / 100;
-  let contributionsInAYear = monthly * 12
-	let result = initial * (1 + rate) ** time + contributionsInAYear * (((1 + rate) ** time - 1) / rate)
-	return result.toFixed(2)
-}
-
-function calculateContributionAfterOneYear(monthly, initial) {
-	let totalContribution = monthly * 12  + initial
-	return totalContribution
-}
-
-
-function calculateInvestmentValueAfterOneYear(initial, monthly, interest) {
-	let rate = interest / 100
-	let contributionInAYear = monthly * 12;
-	let result = initial * (1 + rate) + contributionInAYear * (1 + rate)
-	return result.toFixed(2)
-}
-
 function createTable(initial, monthly, interest, years) {
 	result.innerHTML = '';
 
-	const table = document.createElement('table')
-	table.className = 'investmentTable'
-	result.appendChild(table)
+	const errorMessage = document.createElement('div');
+	errorMessage.className = 'errorMessage';
 
-	table.innerHTML = `<tr>
-      <th>Years</th>
-      <th>Investment Value ${interest}%</th>
-      <th>Total contribution</th>
-    </tr>`
+	if (initial < 0) {
+		errorMessage.textContent = 'Initial value must be greater than zero.';
+		result.appendChild(errorMessage);
+	} else if (monthly < 0) {
+		errorMessage.textContent =
+			'Monthly contribution must be greater than zero.';
+		result.appendChild(errorMessage);
+	} else if (years <= 0) {
+		errorMessage.textContent = 'Minimum investment time is 1 year.';
+		result.appendChild(errorMessage);
+	} else if (interest <= 0) {
+		errorMessage.textContent =
+			'Monthly contribution must be greater than zero.';
+		result.appendChild(errorMessage);
+	} else if (initial <= 0 && monthly <= 0) {
+		errorMessage.textContent =
+			'Initial investment OR monthly contribution must be greater than zero.';
+		result.appendChild(errorMessage);
+	} else {
+		const table = document.createElement('table');
+		table.className = 'investmentTable';
+		result.appendChild(table);
+		table.innerHTML = `<tr>
+      <th class='table-head'>Years</th>
+      <th class='table-head'>Investment Value (${interest}%)</th>
+      <th class='table-head'>Total contribution</th>
+    </tr>`;
 
-	let totalContribution = initial;
-	let totalValue = initial;
-	let rate = interest / 100
+		let totalContribution = initial;
+		let totalValue = initial;
+		let rate = interest / 100;
 
-	for (let i = 0; i <= years; i++) {
-		if (i > 0) {
-			totalContribution += monthly * 12;
-		}
-		
-		table.innerHTML += `
+		for (let i = 0; i <= years; i++) {
+			if (i > 0) {
+				let contributionInAYear = monthly * 12;
+				totalContribution += monthly * 12;
+				totalValue = (totalValue + contributionInAYear) * (1 + rate);
+			}
+
+			table.innerHTML += `
 		<tr>
 		    <td>${i}</td>
-		    <td>${totalValue}</td>
-				<td>${totalContribution}</td>
+		    <td>${totalValue.toFixed(2)}</td>
+				<td>${totalContribution.toFixed(2)}</td>
 
-		  </tr>`
+		  </tr>`;
+		}
 	}
 }
-
-
-// const contribution = calculateContributionAfterOneYear(monthlyContributionValue, initialInvestmentValue)
-// 	const invValue = calculateInvestmentValueAfterOneYear(initialInvestmentValue, monthlyContributionValue, interestRateValue);

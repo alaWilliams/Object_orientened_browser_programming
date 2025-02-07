@@ -1,4 +1,78 @@
+* {
+  font-family: "Ubuntu", serif;
+}
+
+body {
+  background-color: hsl(120, 7%, 91%);
+}
+
+.header {
+  text-align: center;
+  padding: 2rem 0
+}
+
+.instructions {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
 .input-wrapper {
   display: flex;
   flex-direction: column;
+
+}
+#investmentForm {
+  font-size: 1.25rem;
+}
+
+input {
+  height: 1.5rem;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  width: 80%;
+  border-radius: 10px;
+}
+
+.button {
+  width: 80%;
+  height: 2rem;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  margin: 1rem auto;
+  background-color: hsl(120 62% 34%);
+  color: hsl(120, 7%, 91%);
+}
+
+
+.investmentTable th {
+  background-color: hsl(126, 94%, 12%);
+  width: 30%;
+  color: #FFFFFF;
+  text-align: left;
+}
+
+tr:hover { 
+  background-color: hsl(123, 35%, 56%);}
+
+.errorMessage {
+  text-align: center;
+  font-size: 1.5rem;
+  padding-top: 2rem;
+  color: hsl(5, 79%, 42%);
+  font-weight: 800;
+}
+
+
+@media (min-width: 768px) {
+  .container{
+    display: flex;
+  }
+  #investmentForm {
+    width: 50%
+  }
+  #results {
+    width: 50%;
+  }
+  .input-wrapper{
+    width: 100%;
+  }
 }
