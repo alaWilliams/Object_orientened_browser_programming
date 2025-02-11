@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        background-color: lightslategray;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      * {
+        font-family: "Helvetica Neue", sans-serif;
+      }
+
+      h1 {
+        color: white;
+        font-size: 2.5;
+        text-shadow: 4px 4px 2px rgba(0,0,0,0.6);
+
+      }
+
+      .button {
+        height: 2rem;
+        width: 30%;
+        border-radius: 15px;
+        box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+        font-weight: 600;
+
+      }
+      .product {
+        border: 1px solid red;
+        width: 50%;
+      }
+
+      .product-image {
+        width: 100%;
+      }
+
+      .product-list {
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>How to Fetch API from dummyjson.com</h1>
+
+    <button class="button">Click here to fetch data</button>
+
+    <div class="product-list">
+    </div>
+
+    <script type="text/javascript">
+      const button = document.querySelector('.button');
+      const productList = document.querySelector('.product-list');
+
+      button.addEventListener('click', getData);
+
+      async function getData() {
+        productList.innerHTML = '';
+        const url = 'https://dummyjson.com/products';
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data)
+     
+        for (let i = 0; i < data.products.length; i++) {
+          const productDiv = document.createElement('div');
+          const productHeader = document.createElement('h2');
+          const productPrice = document.createElement('p');
+          const productImg = document.createElement('img');
+          const productBrand = document.createElement('p')
+
+          productDiv.className = 'product';
+          productHeader.className = 'product-name';
+          productPrice.className = 'product-price';
+          productImg.className = 'product-image';
+          productBrand.className = 'product-brand';
+
+          productList.appendChild(productDiv);
+          productDiv.appendChild(productHeader);
+          // productList.appendChild(productBrand)
+          productDiv.appendChild(productPrice);
+          productDiv.appendChild(productImg);
+
+          productHeader.textContent = `${data.products[i].title}`;
+          // productBrand.textContent = `${data.products[i].brand}`;
+          productPrice.textContent = `Price: ${data.products[i].price}`;
+          productImg.setAttribute(`src`, `${data.products[i].images[0]}`)
+        
+      }
+    }
+
+
+    </script>
+  </body>
+</html>

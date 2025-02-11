@@ -61,6 +61,9 @@ var Room = /** @class */ (function () {
         this.enemies.forEach(function (enemy) { return names.push(enemy.name); });
         return names;
     };
+    Room.prototype.getEnemies = function () {
+        return this.enemies;
+    };
     return Room;
 }());
 var Enemy = /** @class */ (function () {
@@ -144,14 +147,22 @@ var Player = /** @class */ (function () {
             this.setLocation(nextRoom);
         }
     };
-    Player.prototype.attack = function (enemiesName) {
-        console.log('Attacking' + enemiesName);
-        var attackDamage = Math.floor(Math.random() * 100);
-        if (attackDamage > this.chanceOfAttackHit) {
-            console.log('The attack was successful');
+    Player.prototype.attack = function (enemyName) {
+        var attackPoints = Math.floor(Math.random() * 100);
+        var enemyToAttack = this.location.getEnemies().find(function (enemy) { return enemy.name === enemyName; });
+        if (attackPoints < this.chanceOfAttackHit) {
+            enemyToAttack.hitPoints -= this.attackDamage;
+            if (enemyToAttack.hitPoints <= 0) {
+                console.log("The attack was fatal. ".concat(enemyToAttack.name, " is destroyed."));
+                ////////////////////////////////
+                // remove enemy from the enemy array
+            }
+            else {
+                console.log("You attack ".concat(enemyToAttack.name, " with your ").concat(this.weapon.toLocaleLowerCase(), "! \n The attack was successful and you are hit. You cause ").concat(this.attackDamage, " damage, ").concat(enemyToAttack.name, " has ").concat(enemyToAttack.hitPoints, " health points left"));
+            }
         }
         else {
-            console.log('The attack failed');
+            console.log("You attack ".concat(enemyToAttack.name, " you with ").concat(this.weapon.toLowerCase(), "! \n The attack failed!"));
         }
     };
     return Player;
@@ -214,7 +225,6 @@ function gameLoop() {
                         })];
                 case 4:
                     moveResponse = _b.sent();
-                    console.log(moveResponse);
                     player.move(moveResponse.value);
                     if (player.location === portal) {
                         console.log("You've reached the portal. You won!");
@@ -257,7 +267,7 @@ function gameLoop() {
         });
     });
 }
-// process.stdout.write('\033c'); // clear screen on windows
+// process.stdout.write('\033c'); // clear screen on windows/
 console.log('WELCOME TO THE DUNGEONS OF LORD OBJECT ORIENTUS!');
 console.log('================================================');
 console.log('You walk down the stairs to the dungeons');

@@ -35,6 +35,9 @@ class Room {
 		this.enemies.forEach(enemy => names.push(enemy.name));
 		return names;
 	}
+	getEnemies() {
+		return this.enemies;
+	}
 
 }
 class Enemy {
@@ -164,15 +167,26 @@ class Player {
 		}
 	}
 
-	attack(enemiesName: string) {
-		console.log('Attacking' + enemiesName)
-		let attackDamage = Math.floor(Math.random() * 100);
-		if (attackDamage > this.chanceOfAttackHit) {
-			console.log('The attack was successful')
+	attack(enemyName: string) {
+		let attackPoints = Math.floor(Math.random() * 100);
+		const enemyToAttack = this.location.getEnemies().find(enemy => enemy.name === enemyName)
+		
+		if (attackPoints < this.chanceOfAttackHit) {
+			enemyToAttack.hitPoints -= this.attackDamage
+			if (enemyToAttack.hitPoints <= 0) {
+				console.log(`The attack was fatal. ${enemyToAttack.name} is destroyed.`);
+				////////////////////////////////
+				// remove enemy from the enemy array
+
+			} else {
+				console.log(`You attack ${enemyToAttack.name} with your ${this.weapon.toLocaleLowerCase()}! \n The attack was successful and you are hit. You cause ${this.attackDamage} damage, ${enemyToAttack.name} has ${enemyToAttack.hitPoints} health points left`)
+			}
+			
 		} else {
-			console.log('The attack failed')
+			console.log(`You attack ${enemyToAttack.name} you with ${this.weapon.toLowerCase()}! \n The attack failed!`)
 		}
-	}
+		
+}
 }
 
 
@@ -216,6 +230,7 @@ async function gameLoop() {
 		case 'move':
 			const moveActionChoices = [];
 			const listOfRoomNames = player.getLocation().getNamesOfConnectingRooms();
+
 			const movementOptions = listOfRoomNames.map(roomName => ({
 				title: roomName,
 				value: roomName
@@ -229,7 +244,6 @@ async function gameLoop() {
 				choices: moveActionChoices
 			});
 
-			console.log(moveResponse);
 			player.move(moveResponse.value);
 			if (player.location === portal) {
 				console.log(`You've reached the portal. You won!`)
@@ -256,12 +270,12 @@ async function gameLoop() {
 				choices: attackChoices
 			});
 
+			
 			player.attack(attackResponse.value);
 			if (player.hitPoints <= 0) {
 				console.log(`The game has ended`)
 				continueGame = false
 			}
-		
 
 			break;
 
@@ -276,7 +290,7 @@ async function gameLoop() {
 	}
 }
 
-// process.stdout.write('\033c'); // clear screen on windows
+// process.stdout.write('\033c'); // clear screen on windows/
 console.log('WELCOME TO THE DUNGEONS OF LORD OBJECT ORIENTUS!');
 console.log('================================================');
 console.log('You walk down the stairs to the dungeons');
