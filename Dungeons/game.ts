@@ -183,7 +183,7 @@ class Player {
 				
 
 			} else {
-				console.log(`You attack ${enemyToAttack.name} with your ${this.weapon.toLowerCase()}! \n The attack was successful and you are hit. You cause ${this.attackDamage} damage, ${enemyToAttack.name} has ${enemyToAttack.hitPoints} health points left`)
+				console.log(`You attack ${enemyToAttack.name} with your ${this.weapon.toLowerCase()}! \n The attack was successful and ${enemyToAttack.name} is hit. You cause ${this.attackDamage} damage, ${enemyToAttack.name} has ${enemyToAttack.hitPoints} health points.`)
 			}
 			
 		} else {
