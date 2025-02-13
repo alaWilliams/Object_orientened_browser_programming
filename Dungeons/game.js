@@ -80,14 +80,14 @@ var Enemy = /** @class */ (function () {
         if (attackPoints < this.chanceOfAttackHit) {
             player.hitPoints -= this.attackDamage;
             if (player.hitPoints <= 0) {
-                console.log("The attack of ".concat(this.name, " was fatal. You've died"));
+                console.log("\nThe attack of ".concat(this.name, " was fatal. You've died"));
             }
             else {
-                console.log("".concat(this.name, " attacks you with ").concat(this.weapon.toLocaleLowerCase(), "! \n The attack was successful and you are hit. The ").concat(this.name.toLowerCase(), " causes ").concat(this.attackDamage, " damage, you have ").concat(player.hitPoints, " health points left"));
+                console.log("\n".concat(this.name, " attacks you with ").concat(this.weapon.toLocaleLowerCase(), "! \n The attack was successful and you are hit. The ").concat(this.name.toLowerCase(), " causes ").concat(this.attackDamage, " damage, you have ").concat(player.hitPoints, " health points left"));
             }
         }
         else {
-            console.log("".concat(this.name, " attacks you with ").concat(this.weapon.toLowerCase(), "! \n The attack failed, you've defended yourself."));
+            console.log("\n".concat(this.name, " attacks you with ").concat(this.weapon.toLowerCase(), "! \n The attack failed, you've defended yourself."));
         }
     };
     return Enemy;
@@ -126,14 +126,14 @@ var Player = /** @class */ (function () {
             console.log("Location in undefined");
             return;
         }
-        console.log("You look around.\n You are in the ".concat(this.location.name.toLowerCase(), ". ").concat(this.location.description, " \nThere are doorways leading to:"));
+        console.log("You are in the ".concat(this.location.name.toLowerCase(), ".\n").concat(this.location.description, "\n\nThere are doorways leading to:\n"));
         var roomNames = this.location.getNamesOfConnectingRooms();
         roomNames.forEach(function (roomName) {
-            return console.log("".concat(roomName));
+            return console.log("".concat(roomName, "\n"));
         });
         var enemiesName = this.location.getEnemiesNames();
         if (enemiesName.length > 0) {
-            console.log("You see an enemy ".concat(enemiesName.join(', '), "."));
+            console.log("\nYou see an enemy ".concat(enemiesName.join('& '), ".\n"));
             console.log(this.location.enemies.map(function (enemy) { return "".concat(enemy.name, " is ").concat(enemy.description.toLowerCase()); }).join('\n'));
         }
     };
@@ -143,7 +143,10 @@ var Player = /** @class */ (function () {
             return;
         }
         var nextRoom = this.location.getConnectingRooms().find(function (room) { return room.name === roomName; });
-        if (nextRoom) {
+        if (this.location.enemies.length !== 0) {
+            console.log("You cannot go past the enemies in the room!");
+        }
+        else if (nextRoom) {
             this.setLocation(nextRoom);
         }
     };
@@ -154,15 +157,15 @@ var Player = /** @class */ (function () {
             enemyToAttack.hitPoints -= this.attackDamage;
             if (enemyToAttack.hitPoints <= 0) {
                 console.log("The attack was fatal. ".concat(enemyToAttack.name, " is destroyed."));
-                ////////////////////////////////
-                // remove enemy from the enemy array
+                var index = this.location.enemies.findIndex(function (enemy) { return enemy.name === enemyToAttack.name; });
+                this.location.enemies.splice(index, 1);
             }
             else {
-                console.log("You attack ".concat(enemyToAttack.name, " with your ").concat(this.weapon.toLocaleLowerCase(), "! \n The attack was successful and you are hit. You cause ").concat(this.attackDamage, " damage, ").concat(enemyToAttack.name, " has ").concat(enemyToAttack.hitPoints, " health points left"));
+                console.log("You attack ".concat(enemyToAttack.name, " with your ").concat(this.weapon.toLowerCase(), "! \n The attack was successful and you are hit. You cause ").concat(this.attackDamage, " damage, ").concat(enemyToAttack.name, " has ").concat(enemyToAttack.hitPoints, " health points left"));
             }
         }
         else {
-            console.log("You attack ".concat(enemyToAttack.name, " you with ").concat(this.weapon.toLowerCase(), "! \n The attack failed!"));
+            console.log("You attack ".concat(enemyToAttack.name, " you with ").concat(this.weapon.toLowerCase(), "! \nThe attack failed!"));
         }
     };
     return Player;

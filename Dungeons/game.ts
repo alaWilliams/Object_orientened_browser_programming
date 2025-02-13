@@ -65,13 +65,13 @@ class Enemy {
 		if (attackPoints < this.chanceOfAttackHit) {
 			player.hitPoints -= this.attackDamage
 			if (player.hitPoints <= 0) {
-				console.log(`The attack of ${this.name} was fatal. You've died`)
+				console.log(`\nThe attack of ${this.name} was fatal. You've died`)
 			} else {
-				console.log(`${this.name} attacks you with ${this.weapon.toLocaleLowerCase()}! \n The attack was successful and you are hit. The ${this.name.toLowerCase()} causes ${this.attackDamage} damage, you have ${player.hitPoints} health points left`)
+				console.log(`\n${this.name} attacks you with ${this.weapon.toLocaleLowerCase()}! \n The attack was successful and you are hit. The ${this.name.toLowerCase()} causes ${this.attackDamage} damage, you have ${player.hitPoints} health points left`)
 			}
 			
 		} else {
-			console.log(`${this.name} attacks you with ${this.weapon.toLowerCase()}! \n The attack failed, you've defended yourself.`)
+			console.log(`\n${this.name} attacks you with ${this.weapon.toLowerCase()}! \n The attack failed, you've defended yourself.`)
 		}
 	}
 	}
@@ -137,18 +137,18 @@ class Player {
 			return;
 		}
 		console.log(
-			`You look around.\n You are in the ${this.location.name.toLowerCase()}. ${this.location.description
-			} \nThere are doorways leading to:`
+			`You are in the ${this.location.name.toLowerCase()}.\n${this.location.description
+			}\n\nThere are doorways leading to:\n`
 		);
 		let roomNames = this.location.getNamesOfConnectingRooms();
 		roomNames.forEach(roomName => 
-			console.log(`${roomName}`));
+			console.log(`${roomName}\n`));
 		
 		const enemiesName = this.location.getEnemiesNames();
 		
 
 		if (enemiesName.length > 0) {
-			console.log(`You see an enemy ${enemiesName.join(', ')}.`)
+			console.log(`\nYou see an enemy ${enemiesName.join('& ')}.\n`)
 			console.log(this.location.enemies.map(enemy => `${enemy.name} is ${enemy.description.toLowerCase()}`).join('\n'))
 			
 		}
@@ -162,28 +162,32 @@ class Player {
 		}
 
 		const nextRoom = this.location.getConnectingRooms().find(room => room.name === roomName);
-		if (nextRoom) {
+		if (this.location.enemies.length !== 0) {
+			console.log(`You cannot go past the enemies in the room!`)
+		} else if (nextRoom) {
 			this.setLocation(nextRoom);
 		}
 	}
 
 	attack(enemyName: string) {
 		let attackPoints = Math.floor(Math.random() * 100);
+		
 		const enemyToAttack = this.location.getEnemies().find(enemy => enemy.name === enemyName)
 		
 		if (attackPoints < this.chanceOfAttackHit) {
 			enemyToAttack.hitPoints -= this.attackDamage
 			if (enemyToAttack.hitPoints <= 0) {
 				console.log(`The attack was fatal. ${enemyToAttack.name} is destroyed.`);
-				////////////////////////////////
-				// remove enemy from the enemy array
+				let index = this.location.enemies.findIndex(enemy => enemy.name === enemyToAttack.name);
+				this.location.enemies.splice(index, 1);
+				
 
 			} else {
-				console.log(`You attack ${enemyToAttack.name} with your ${this.weapon.toLocaleLowerCase()}! \n The attack was successful and you are hit. You cause ${this.attackDamage} damage, ${enemyToAttack.name} has ${enemyToAttack.hitPoints} health points left`)
+				console.log(`You attack ${enemyToAttack.name} with your ${this.weapon.toLowerCase()}! \n The attack was successful and you are hit. You cause ${this.attackDamage} damage, ${enemyToAttack.name} has ${enemyToAttack.hitPoints} health points left`)
 			}
 			
 		} else {
-			console.log(`You attack ${enemyToAttack.name} you with ${this.weapon.toLowerCase()}! \n The attack failed!`)
+			console.log(`You attack ${enemyToAttack.name} you with ${this.weapon.toLowerCase()}! \nThe attack failed!`)
 		}
 		
 }
