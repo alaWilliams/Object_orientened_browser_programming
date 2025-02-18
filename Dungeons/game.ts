@@ -172,9 +172,12 @@ class Player {
 	attack(enemyName: string) {
 		let attackPoints = Math.floor(Math.random() * 100);
 		
-		const enemyToAttack = this.location.getEnemies().find(enemy => enemy.name === enemyName)
+		if (this.location?.getEnemies().length <= 0) {
+			console.log('There are no enemies to attack.')
+		} else {
+			const enemyToAttack = this.location.getEnemies().find(enemy => enemy.name === enemyName)
 		
-		if (attackPoints < this.chanceOfAttackHit) {
+			if (attackPoints < this.chanceOfAttackHit) {
 			enemyToAttack.hitPoints -= this.attackDamage
 			if (enemyToAttack.hitPoints <= 0) {
 				console.log(`The attack was fatal. ${enemyToAttack.name} is destroyed.`);
@@ -189,6 +192,9 @@ class Player {
 		} else {
 			console.log(`You attack ${enemyToAttack.name} you with ${this.weapon.toLowerCase()}! \nThe attack failed!`)
 		}
+
+		}
+		
 		
 }
 }

@@ -151,21 +151,27 @@ var Player = /** @class */ (function () {
         }
     };
     Player.prototype.attack = function (enemyName) {
+        var _a;
         var attackPoints = Math.floor(Math.random() * 100);
-        var enemyToAttack = this.location.getEnemies().find(function (enemy) { return enemy.name === enemyName; });
-        if (attackPoints < this.chanceOfAttackHit) {
-            enemyToAttack.hitPoints -= this.attackDamage;
-            if (enemyToAttack.hitPoints <= 0) {
-                console.log("The attack was fatal. ".concat(enemyToAttack.name, " is destroyed."));
-                var index = this.location.enemies.findIndex(function (enemy) { return enemy.name === enemyToAttack.name; });
-                this.location.enemies.splice(index, 1);
-            }
-            else {
-                console.log("You attack ".concat(enemyToAttack.name, " with your ").concat(this.weapon.toLowerCase(), "! \n The attack was successful and you are hit. You cause ").concat(this.attackDamage, " damage, ").concat(enemyToAttack.name, " has ").concat(enemyToAttack.hitPoints, " health points left"));
-            }
+        if (((_a = this.location) === null || _a === void 0 ? void 0 : _a.getEnemies().length) <= 0) {
+            console.log('There are no enemies to attack.');
         }
         else {
-            console.log("You attack ".concat(enemyToAttack.name, " you with ").concat(this.weapon.toLowerCase(), "! \nThe attack failed!"));
+            var enemyToAttack_1 = this.location.getEnemies().find(function (enemy) { return enemy.name === enemyName; });
+            if (attackPoints < this.chanceOfAttackHit) {
+                enemyToAttack_1.hitPoints -= this.attackDamage;
+                if (enemyToAttack_1.hitPoints <= 0) {
+                    console.log("The attack was fatal. ".concat(enemyToAttack_1.name, " is destroyed."));
+                    var index = this.location.enemies.findIndex(function (enemy) { return enemy.name === enemyToAttack_1.name; });
+                    this.location.enemies.splice(index, 1);
+                }
+                else {
+                    console.log("You attack ".concat(enemyToAttack_1.name, " with your ").concat(this.weapon.toLowerCase(), "! \n The attack was successful and ").concat(enemyToAttack_1.name, " is hit. You cause ").concat(this.attackDamage, " damage, ").concat(enemyToAttack_1.name, " has ").concat(enemyToAttack_1.hitPoints, " health points."));
+                }
+            }
+            else {
+                console.log("You attack ".concat(enemyToAttack_1.name, " you with ").concat(this.weapon.toLowerCase(), "! \nThe attack failed!"));
+            }
         }
     };
     return Player;
